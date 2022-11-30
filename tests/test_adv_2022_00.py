@@ -6,9 +6,11 @@ import pytest
 import general_utils as gu
 import solutions.adv_2022_00 as sol
 
+_DAY_NUM = 0
+
 
 def _data_p():
-    return gu.read_input(0, "p")
+    return gu.read_input(_DAY_NUM, "p")
 
 
 @pytest.mark.parametrize("input_str,expected", [(_data_p(), 7)])
