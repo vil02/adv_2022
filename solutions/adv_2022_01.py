@@ -32,4 +32,4 @@ def solve_b(in_str):
     data = parse_input(in_str)
     sorted_sums = sorted(_count_sums(data))
     assert len(sorted_sums) >= 3
-    return sorted_sums[-1] + sorted_sums[-2] + sorted_sums[-3]
+    return sum(sorted_sums[-3:])
