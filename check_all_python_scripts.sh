@@ -13,7 +13,7 @@ function check_single()
     fi
 
     printf "Checking with flake8:\n"
-    local -r flake8_opts="--count --max-line-length=80 --show-source --ignore=E203,W503"
+    local -r flake8_opts="--count --max-line-length=88 --show-source --ignore=E203,W503"
     local -r flake8_cmd="poetry run flake8 $in_path $flake8_opts"
     if ! $flake8_cmd ; then
         result_val=1
