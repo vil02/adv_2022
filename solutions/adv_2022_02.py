@@ -67,5 +67,5 @@ def evaluate_single_b(in_data):
 
 
 def solve_b(in_str):
-    """returns the solution for part_a"""
+    """returns the solution for part_b"""
     return sum(evaluate_single_b(_) for _ in parse_input(in_str))

@@ -7,5 +7,5 @@ def solve_a(in_str):
 
 
 def solve_b(in_str):
-    """returns the solution for part_a"""
+    """returns the solution for part_b"""
     return sum(_ == "B" for _ in in_str)
