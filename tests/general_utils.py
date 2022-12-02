@@ -1,6 +1,4 @@
-"""
-general utilities for advent of code
-"""
+"""general utilities for advent of code"""
 import pathlib
 import functools
 
@@ -31,9 +29,7 @@ def read_to_string(in_file_path):
 
 
 def test_input_data_folder():
-    """
-    retursn the path of the with test input data
-    """
+    """retursn the path of the with test input data"""
     res = project_folder() / "tests" / "test_input_data"
     assert res.is_dir()
     return res
@@ -41,9 +37,7 @@ def test_input_data_folder():
 
 @functools.lru_cache(None)
 def read_input(in_day_id, in_type_id):
-    """
-    returns specified test input as a string
-    """
+    """returns specified test input as a string"""
 
     def day_id_str(in_day_id):
         assert 0 <= in_day_id <= 25

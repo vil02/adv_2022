@@ -1,6 +1,4 @@
-"""
-solution of adv_2022_01
-"""
+"""solution of adv_2022_01"""
 
 
 def parse_input(in_str):
@@ -18,17 +16,13 @@ def _count_sums(in_data):
 
 
 def solve_a(in_str):
-    """
-    returns the solution for part_a
-    """
+    """returns the solution for part_a"""
     data = parse_input(in_str)
     return max(_count_sums(data))
 
 
 def solve_b(in_str):
-    """
-    returns the solution for part_a
-    """
+    """returns the solution for part_a"""
     data = parse_input(in_str)
     sorted_sums = sorted(_count_sums(data))
     assert len(sorted_sums) >= 3
