@@ -25,20 +25,24 @@ def test_parse_input():
 
 
 @pytest.mark.parametrize(
-    "input_str,expected", [(_data_small(), 24000), (_data_p(), 69912)]
+    "input_str,expected",
+    [
+        (_data_small(), 24000),
+        (_data_p(), 69912),
+    ],
 )
 def test_solve_a(input_str, expected):
-    """
-    tests solve_a
-    """
+    """tests solve_a"""
     assert sol.solve_a(input_str) == expected
 
 
 @pytest.mark.parametrize(
-    "input_str,expected", [(_data_small(), 45000), (_data_p(), 208180)]
+    "input_str,expected",
+    [
+        (_data_small(), 45000),
+        (_data_p(), 208180),
+    ],
 )
 def test_solve_b(input_str, expected):
-    """
-    tests solve_b
-    """
+    """tests solve_b"""
     assert sol.solve_b(input_str) == expected
