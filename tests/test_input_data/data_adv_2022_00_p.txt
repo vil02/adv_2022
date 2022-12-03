@@ -1,1 +1,2 @@
-ABABABABBBBAAA
+normal
+dummy
