@@ -3,6 +3,7 @@
 
 def parse_input(in_str):
     """parses the input into..."""
+
     def proc_single_line(in_line):
         return len(in_line)
 
