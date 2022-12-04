@@ -54,5 +54,5 @@ def solve_b(in_str):
         assert len(common) == 1
         return get_priority(common[0])
 
-    data = _parse_input_b(in_str, 3)
-    return sum(proc_single_group(_) for _ in data)
+    data = parse_input_b(in_str, 3)
+    return sum(_proc_single_group(_) for _ in data)
