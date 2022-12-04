@@ -4,6 +4,10 @@ name: python_test
 # yamllint disable-line rule:truthy
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   python_test:
