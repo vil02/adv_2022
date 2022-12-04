@@ -49,10 +49,10 @@ def parse_input_b(in_str, line_group_size):
 def solve_b(in_str):
     """returns the solution for part_b"""
 
-    def proc_single_group(in_group):
+    def _proc_single_group(in_group):
         common = list(set.intersection(*[set(_) for _ in in_group]))
         assert len(common) == 1
         return get_priority(common[0])
 
     data = parse_input_b(in_str, 3)
-    return sum(proc_single_group(_) for _ in data)
+    return sum(_proc_single_group(_) for _ in data)
