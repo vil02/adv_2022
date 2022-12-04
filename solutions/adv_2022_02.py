@@ -4,12 +4,12 @@
 def parse_input(in_str):
     """parses the input into a list of pairs/tuples"""
 
-    def parse_line(in_line_str):
+    def _parse_line(in_line_str):
         res = tuple(in_line_str.split())
         assert len(res) == 2
         return res
 
-    return [parse_line(_) for _ in in_str.splitlines()]
+    return [_parse_line(_) for _ in in_str.splitlines()]
 
 
 def _op_to_name(in_op):
