@@ -18,8 +18,8 @@ def _data_p():
 @pytest.mark.parametrize(
     "input_str,expected",
     [
-        (_data_small(), 10),
-        (_data_p(), 11),
+        pytest.param(_data_small(), 10, id="small"),
+        pytest.param(_data_p(), 11, id="p"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -30,8 +30,8 @@ def test_solve_a(input_str, expected):
 @pytest.mark.parametrize(
     "input_str,expected",
     [
-        (_data_small(), 20),
-        (_data_p(), 22),
+        pytest.param(_data_small(), 20, id="small"),
+        pytest.param(_data_p(), 22, id="p"),
     ],
 )
 def test_solve_b(input_str, expected):
