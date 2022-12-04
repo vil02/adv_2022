@@ -4,11 +4,11 @@
 def parse_input(in_str):
     """returns a list of lists of integers"""
 
-    def proc_piece(in_piece_str):
+    def _proc_piece(in_piece_str):
         return [int(_) for _ in in_piece_str.splitlines()]
 
     piece_list = in_str.split("\n\n")
-    return [proc_piece(_) for _ in piece_list]
+    return [_proc_piece(_) for _ in piece_list]
 
 
 def _count_sums(in_data):
