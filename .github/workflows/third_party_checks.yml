@@ -31,17 +31,14 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           poetry install --with dev
-      - name: Install language dependencies
-        working-directory: ${{github.workspace}}/system_setup_scripts
-        run: |
-          sudo apt-get update
-          ./install_all.sh
+
       - name: Generate coverage data
         run: |
           poetry run coverage run --branch -m pytest
           poetry run coverage xml --omit="tests/*"
           poetry run coverage html --omit="tests/*"
           poetry run coverage report --omit="tests/*"
+
       - name: Fix code coverage paths for SonarCloud
         # yamllint disable rule:line-length
         run: |
