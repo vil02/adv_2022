@@ -2,6 +2,9 @@
 
 import string
 import re
+import collections
+
+Move = collections.namedtuple("Move", ["amount", "source", "target"])
 
 
 def get_stack_number(in_col_num):
@@ -27,16 +30,13 @@ def parse_input(in_str):
 
     def _proc_single_move_line(in_line):
         pattern = re.compile(
-            r"move (?P<amount>\d*) from (?P<from_num>\d*) to (?P<to_num>\d*)"
+            r"move (?P<amount>\d*) from (?P<source>\d*) to (?P<target>\d*)"
         )
         match_data = pattern.match(in_line)
-        return tuple(
-            int(_)
-            for _ in [
-                match_data.group("amount"),
-                match_data.group("from_num"),
-                match_data.group("to_num"),
-            ]
+        return Move(
+            int(match_data.group("amount")),
+            int(match_data.group("source")),
+            int(match_data.group("target")),
         )
 
     initial_state_str, moves_str = in_str.split("\n\n")
@@ -48,10 +48,9 @@ def parse_input(in_str):
 
 def make_move_a(state, in_move):
     """moves the containers as in part a"""
-    amount, from_num, to_num = in_move
-    for _ in range(amount):
-        container = state[from_num].pop()
-        state[to_num].append(container)
+    for _ in range(in_move.amount):
+        container = state[in_move.source].pop()
+        state[in_move.target].append(container)
 
 
 def _make_moves(state, in_moves, in_move_fun):
@@ -73,11 +72,12 @@ def solve_a(in_str):
 
 def make_move_b(state, in_move):
     """moves the containers as in part b"""
-    amount, from_num, to_num = in_move
-    assert len(state[from_num]) >= amount
-    containers = state[from_num][-amount:]
-    state[from_num] = state[from_num][: len(state[from_num]) - amount]
-    state[to_num] += containers
+    assert len(state[in_move.source]) >= in_move.amount
+    containers = state[in_move.source][-in_move.amount :]
+    state[in_move.source] = state[in_move.source][
+        : len(state[in_move.source]) - in_move.amount
+    ]
+    state[in_move.target] += containers
 
 
 def solve_b(in_str):

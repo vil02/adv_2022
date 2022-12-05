@@ -32,7 +32,12 @@ def test_parse_input():
     """tests parse_input"""
     actual_state, actual_moves = sol.parse_input(_data_small())
     expected_state = {1: ["Z", "N"], 2: ["M", "C", "D"], 3: ["P"]}
-    expected_moves = [(1, 2, 1), (3, 1, 3), (2, 2, 1), (1, 1, 2)]
+    expected_moves = [
+        sol.Move(1, 2, 1),
+        sol.Move(3, 1, 3),
+        sol.Move(2, 2, 1),
+        sol.Move(1, 1, 2),
+    ]
     assert actual_state == expected_state
     assert actual_moves == expected_moves
 
