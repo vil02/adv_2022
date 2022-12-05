@@ -1,6 +1,4 @@
-"""
-tests of adv_2022_01
-"""
+"""tests of adv_2022_01"""
 
 import pytest
 import general_utils as gu
