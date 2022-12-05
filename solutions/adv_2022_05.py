@@ -74,6 +74,7 @@ def solve_a(in_str):
 def make_move_b(state, in_move):
     """moves the containers as in part b"""
     amount, from_num, to_num = in_move
+    assert len(state[from_num]) >= amount
     containers = state[from_num][-amount:]
     state[from_num] = state[from_num][: len(state[from_num]) - amount]
     state[to_num] += containers
