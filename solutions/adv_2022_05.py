@@ -53,7 +53,8 @@ def make_move_a(state, in_move):
         state[in_move.target].append(container)
 
 
-def _make_moves(state, in_moves, in_move_fun):
+def make_moves(state, in_moves, in_move_fun):
+    """makes all of the moves and update the state"""
     for _ in in_moves:
         in_move_fun(state, _)
 
@@ -66,7 +67,7 @@ def get_top_containers(in_state):
 def solve_a(in_str):
     """returns the solution for part_a"""
     state, moves = parse_input(in_str)
-    _make_moves(state, moves, make_move_a)
+    make_moves(state, moves, make_move_a)
     return get_top_containers(state)
 
 
@@ -74,14 +75,12 @@ def make_move_b(state, in_move):
     """moves the containers as in part b"""
     assert len(state[in_move.source]) >= in_move.amount
     containers = state[in_move.source][-in_move.amount :]
-    state[in_move.source] = state[in_move.source][
-        : len(state[in_move.source]) - in_move.amount
-    ]
+    del state[in_move.source][-in_move.amount :]
     state[in_move.target] += containers
 
 
 def solve_b(in_str):
     """returns the solution for part_b"""
     state, moves = parse_input(in_str)
-    _make_moves(state, moves, make_move_b)
+    make_moves(state, moves, make_move_b)
     return get_top_containers(state)

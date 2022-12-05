@@ -43,6 +43,30 @@ def test_parse_input():
 
 
 @pytest.mark.parametrize(
+    "input_str,move_fun,expected_state",
+    [
+        pytest.param(
+            _data_small(),
+            sol.make_move_a,
+            {1: ["C"], 2: ["M"], 3: ["P", "D", "N", "Z"]},
+            id="small_with_make_move_a",
+        ),
+        pytest.param(
+            _data_small(),
+            sol.make_move_b,
+            {1: ["M"], 2: ["C"], 3: ["P", "Z", "N", "D"]},
+            id="small_with_make_move_b",
+        ),
+    ],
+)
+def test_make_move(input_str, move_fun, expected_state):
+    """tests make_move"""
+    state, moves = sol.parse_input(input_str)
+    sol.make_moves(state, moves, move_fun)
+    assert state == expected_state
+
+
+@pytest.mark.parametrize(
     "input_str,expected",
     [
         pytest.param(_data_small(), "CMZ", id="small"),
