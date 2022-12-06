@@ -3,15 +3,6 @@
 import collections
 
 
-def parse_input(in_str):
-    """parses the input into..."""
-
-    def _proc_single_line(in_line):
-        return len(in_line)
-
-    return [_proc_single_line(_) for _ in in_str.splitlines()]
-
-
 def find_first_block_end(in_str, in_size):
     """returns the end of the first block of given size of different characters"""
 
