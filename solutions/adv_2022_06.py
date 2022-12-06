@@ -21,12 +21,11 @@ def find_first_block_end(in_str, in_size):
     if in_size > len(in_str):
         raise ValueError("Input string is shorter than the block size.")
 
-    cur_block = collections.deque(in_str[:in_size])
+    cur_block = collections.deque(in_str[:in_size], maxlen=in_size)
     if _check_block(cur_block):
         return in_size
 
     for cur_pos in range(in_size, len(in_str)):
-        cur_block.popleft()
         cur_block.append(in_str[cur_pos])
         if _check_block(cur_block):
             return cur_pos + 1
