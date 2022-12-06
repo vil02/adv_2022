@@ -66,11 +66,11 @@ def test_solve_a(input_str, expected):
 @pytest.mark.parametrize(
     "input_str,expected",
     [
-        pytest.param("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 19, id=_get_id("a", 0)),
-        pytest.param("bvwbjplbgvbhsrlpgdmjqwftvncz", 23, id=_get_id("a", 1)),
-        pytest.param("nppdvjthqldpwncqszvftbrmjlhg", 23, id=_get_id("a", 2)),
-        pytest.param("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29, id=_get_id("a", 3)),
-        pytest.param("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26, id=_get_id("a", 4)),
+        pytest.param("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 19, id=_get_id("b", 0)),
+        pytest.param("bvwbjplbgvbhsrlpgdmjqwftvncz", 23, id=_get_id("b", 1)),
+        pytest.param("nppdvjthqldpwncqszvftbrmjlhg", 23, id=_get_id("b", 2)),
+        pytest.param("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29, id=_get_id("b", 3)),
+        pytest.param("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26, id=_get_id("b", 4)),
         pytest.param(_data_p(), 2625, id="p"),
     ],
 )
