@@ -50,12 +50,12 @@ def _get_dir_name_from_cd(in_cd_command):
     return res
 
 
-def _change_dir(in_dir, new_dir):
-    if new_dir == _ROOT:
-        return [new_dir]
-    if new_dir == "..":
-        return in_dir[:-1]
-    return in_dir + [new_dir]
+def _change_dir(in_raw_dir, new_dir_name):
+    if new_dir_name == _ROOT:
+        return [new_dir_name]
+    if new_dir_name == "..":
+        return in_raw_dir[:-1]
+    return in_raw_dir + [new_dir_name]
 
 
 def _split_cmd_result_line(in_line):
@@ -78,41 +78,43 @@ def _is_dir(in_line):
     return _split_cmd_result_line(in_line)[0] == "dir"
 
 
-def _parse_dir_line(cur_dir, in_line):
+def _parse_dir_line(cur_raw_dir, in_line):
     assert _is_dir(in_line)
-    return _dir_to_str(cur_dir + [_split_cmd_result_line(in_line)[1]])
+    return _dir_to_str(cur_raw_dir + [_split_cmd_result_line(in_line)[1]])
 
 
-def _dir_to_str(in_dir):
-    return _SEPARATOR.join(in_dir) + _SEPARATOR
+def _dir_to_str(in_raw_dir):
+    return _SEPARATOR.join(in_raw_dir) + _SEPARATOR
 
 
 def parse_input(in_str):
     """parses the input into a list of Files"""
     res = {}
-    cur_dir = []
+    cur_raw_dir = []
     for cur_line in in_str.splitlines():
         if cur_line.startswith("$ cd"):
-            cur_dir = _change_dir(cur_dir, _get_dir_name_from_cd(cur_line))
+            cur_raw_dir = _change_dir(cur_raw_dir, _get_dir_name_from_cd(cur_line))
         elif not cur_line.startswith("$"):
-            if _dir_to_str(cur_dir) not in res:
-                res[_dir_to_str(cur_dir)] = Directory()
+            if _dir_to_str(cur_raw_dir) not in res:
+                res[_dir_to_str(cur_raw_dir)] = Directory()
             if _is_file(cur_line):
-                res[_dir_to_str(cur_dir)].add_file(_parse_file_line(cur_line))
+                res[_dir_to_str(cur_raw_dir)].add_file(_parse_file_line(cur_line))
             else:
                 assert _is_dir(cur_line)
-                res[_dir_to_str(cur_dir)].add_dir(_parse_dir_line(cur_dir, cur_line))
+                res[_dir_to_str(cur_raw_dir)].add_dir(
+                    _parse_dir_line(cur_raw_dir, cur_line)
+                )
     return res
 
 
-def get_dir_size(in_dir, in_data):
+def get_dir_size(in_dir_path, in_dirs):
     """returns the total size of the directory"""
-    cur_dir = in_data[in_dir]
-    return cur_dir.all_file_size() + sum(get_dir_size(_, in_data) for _ in cur_dir.dirs)
+    cur_dir = in_dirs[in_dir_path]
+    return cur_dir.all_file_size() + sum(get_dir_size(_, in_dirs) for _ in cur_dir.dirs)
 
 
-def _get_dir_sizes(in_data):
-    return {_: get_dir_size(_, in_data) for _ in in_data}
+def _get_dir_sizes(in_dirs):
+    return {_: get_dir_size(_, in_dirs) for _ in in_dirs}
 
 
 def _get_sizes_form_str(in_str):

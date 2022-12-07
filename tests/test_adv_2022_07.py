@@ -30,21 +30,21 @@ _EXPECTED_SIZES = {
 
 
 @pytest.mark.parametrize(
-    "input_dir, expected",
-    [(dir, size.simple_size) for (dir, size) in _EXPECTED_SIZES.items()],
+    "dir_path, expected",
+    [(dir_path, size.simple_size) for (dir_path, size) in _EXPECTED_SIZES.items()],
 )
-def test_all_file_size(input_dir, expected):
+def test_all_file_size(dir_path, expected):
     """tests Dictionary.all_file_size agains example data"""
-    assert _EXAMPLE_DATA[input_dir].all_file_size() == expected
+    assert _EXAMPLE_DATA[dir_path].all_file_size() == expected
 
 
 @pytest.mark.parametrize(
-    "input_dir, expected",
-    [(dir, size.total_size) for (dir, size) in _EXPECTED_SIZES.items()],
+    "dir_path, expected",
+    [(dir_path, size.total_size) for (dir_path, size) in _EXPECTED_SIZES.items()],
 )
-def test_get_dir_size(input_dir, expected):
+def test_get_dir_size(dir_path, expected):
     """tests get_dir_size agains example data"""
-    assert sol.get_dir_size(input_dir, _EXAMPLE_DATA) == expected
+    assert sol.get_dir_size(dir_path, _EXAMPLE_DATA) == expected
 
 
 @pytest.mark.parametrize(
