@@ -6,6 +6,41 @@ _ROOT = "/"
 _SEPARATOR = "|"
 
 
+File = collections.namedtuple("File", ["name", "size"])
+
+
+class Directory:
+    """
+    represents a directory containing:
+    - list of files
+    - (absolute) paths of its subdirectories
+    """
+
+    def __init__(self):
+        self._files = []
+        self._dirs = []
+
+    def add_file(self, in_file):
+        """adds a file"""
+        self._files.append(in_file)
+
+    def add_dir(self, in_dir):
+        """adds a directory"""
+        self._dirs.append(in_dir)
+
+    def all_file_size(self):
+        """
+        returns the sum of all of the files stored in this directory
+        (not in the subdirectories)
+        """
+        return sum(_.size for _ in self._files)
+
+    @property
+    def dirs(self):
+        """getter for _dirs"""
+        return self._dirs
+
+
 def _get_dir_name_from_cd(in_cd_command):
     assert in_cd_command.startswith("$ cd ")
     pieces = in_cd_command.split(" ")
@@ -23,17 +58,29 @@ def _change_dir(in_dir, new_dir):
     return in_dir + [new_dir]
 
 
-def _is_file(in_line):
+def _split_cmd_result_line(in_line):
     pieces = in_line.split(" ")
     assert len(pieces) == 2
-    return pieces[0].isnumeric()
+    return pieces
 
 
-def _parse_file_line(cur_dir, in_line):
+def _is_file(in_line):
+    return _split_cmd_result_line(in_line)[0].isnumeric()
+
+
+def _parse_file_line(in_line):
     assert _is_file(in_line)
-    pieces = in_line.split(" ")
-    file = collections.namedtuple("File", ["dir", "name", "size"])
-    return file(cur_dir, pieces[1], int(pieces[0]))
+    pieces = _split_cmd_result_line(in_line)
+    return File(pieces[1], int(pieces[0]))
+
+
+def _is_dir(in_line):
+    return _split_cmd_result_line(in_line)[0] == "dir"
+
+
+def _parse_dir_line(cur_dir, in_line):
+    assert _is_dir(in_line)
+    return _dir_to_str(cur_dir + [_split_cmd_result_line(in_line)[1]])
 
 
 def _dir_to_str(in_dir):
@@ -42,60 +89,45 @@ def _dir_to_str(in_dir):
 
 def parse_input(in_str):
     """parses the input into a list of Files"""
-    res = []
-    cur_dir = None
+    res = {}
+    cur_dir = []
     for cur_line in in_str.splitlines():
         if cur_line.startswith("$ cd"):
             cur_dir = _change_dir(cur_dir, _get_dir_name_from_cd(cur_line))
-        elif not cur_line.startswith("$") and _is_file(cur_line):
-            res.append(_parse_file_line(_dir_to_str(cur_dir), cur_line))
+        elif not cur_line.startswith("$"):
+            if _dir_to_str(cur_dir) not in res:
+                res[_dir_to_str(cur_dir)] = Directory()
+            if _is_file(cur_line):
+                res[_dir_to_str(cur_dir)].add_file(_parse_file_line(cur_line))
+            else:
+                assert _is_dir(cur_line)
+                res[_dir_to_str(cur_dir)].add_dir(_parse_dir_line(cur_dir, cur_line))
     return res
 
 
-def _is_subdir(dir_a, dir_b):
-    """returns true if dir_b is a subdir of dir_a"""
-    return dir_b.startswith(dir_a)
+def get_dir_size(in_dir, in_data):
+    """returns the total size of the directory"""
+    cur_dir = in_data[in_dir]
+    return cur_dir.all_file_size() + sum(get_dir_size(_, in_data) for _ in cur_dir.dirs)
 
 
-def _gen_all_superdirs(in_dir):
-    raw_dir = in_dir[:-1].split(_SEPARATOR)
-    for cur_len in range(1, len(raw_dir) + 1):
-        yield _dir_to_str(raw_dir[:cur_len])
+def _get_dir_sizes(in_data):
+    return {_: get_dir_size(_, in_data) for _ in in_data}
 
 
-def _get_all_dirs(in_file_list):
-    dirs = [_.dir for _ in in_file_list]
-    res = []
-    for cur_dir in dirs:
-        res.append(cur_dir)
-        for _ in _gen_all_superdirs(cur_dir):
-            res.append(_)
-    return set(res)
-
-
-def _get_dir_size(in_dir, in_files):
-    return sum(_.size for _ in in_files if _is_subdir(in_dir, _.dir))
-
-
-def _get_dir_sizes(in_files):
-    dirs = _get_all_dirs(in_files)
-    return {_: _get_dir_size(_, in_files) for _ in dirs}
-
-
-def _get_dir_sizes_from_str(in_str):
-    files = parse_input(in_str)
-    return _get_dir_sizes(files)
+def _get_sizes_form_str(in_str):
+    return _get_dir_sizes(parse_input(in_str))
 
 
 def solve_a(in_str):
     """returns the solution for part_a"""
-    sizes = _get_dir_sizes_from_str(in_str)
+    sizes = _get_sizes_form_str(in_str)
     return sum(_ for _ in sizes.values() if _ <= 100000)
 
 
 def solve_b(in_str):
     """returns the solution for part_b"""
-    sizes = _get_dir_sizes_from_str(in_str)
+    sizes = _get_sizes_form_str(in_str)
     used_space = sizes[_ROOT + _SEPARATOR]
     total_space = 70000000
     assert used_space <= total_space
