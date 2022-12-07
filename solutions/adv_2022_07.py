@@ -32,8 +32,8 @@ def _is_file(in_line):
 def _parse_file_line(cur_dir, in_line):
     assert _is_file(in_line)
     pieces = in_line.split(" ")
-    File = collections.namedtuple("File", ["dir", "name", "size"])
-    return File(cur_dir, pieces[1], int(pieces[0]))
+    file = collections.namedtuple("File", ["dir", "name", "size"])
+    return file(cur_dir, pieces[1], int(pieces[0]))
 
 
 def _dir_to_str(in_dir):
