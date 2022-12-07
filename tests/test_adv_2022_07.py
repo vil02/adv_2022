@@ -12,6 +12,10 @@ def _data_small():
     return gu.read_input(_DAY_NUM, "small")
 
 
+def _data_small_r():
+    return gu.read_input(_DAY_NUM, "small_r")
+
+
 def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
@@ -51,6 +55,7 @@ def test_get_dir_size(dir_path, expected):
     "input_str,expected",
     [
         pytest.param(_data_small(), 95437, id="small"),
+        pytest.param(_data_small_r(), 99999, id="small_r"),
         pytest.param(_data_p(), 1453349, id="p"),
     ],
 )
@@ -63,6 +68,7 @@ def test_solve_a(input_str, expected):
     "input_str,expected",
     [
         pytest.param(_data_small(), 24933642, id="small"),
+        pytest.param(_data_small_r(), 50099999, id="small_r"),
         pytest.param(_data_p(), 2948823, id="p"),
     ],
 )
