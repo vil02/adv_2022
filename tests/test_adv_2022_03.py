@@ -11,6 +11,10 @@ def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
 
+def _data_s():
+    return gu.read_input(_DAY_NUM, "s")
+
+
 def _data_small():
     return gu.read_input(_DAY_NUM, "small")
 
@@ -48,8 +52,9 @@ def test_get_priority_raises_error(input_char):
 @pytest.mark.parametrize(
     "input_str,expected",
     [
-        (_data_small(), 157),
-        (_data_p(), 8298),
+        pytest.param(_data_small(), 157, id="small"),
+        pytest.param(_data_p(), 8298, id="p"),
+        pytest.param(_data_s(), 8109, id="s"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -60,8 +65,9 @@ def test_solve_a(input_str, expected):
 @pytest.mark.parametrize(
     "input_str,expected",
     [
-        (_data_small(), 70),
-        (_data_p(), 2708),
+        pytest.param(_data_small(), 70, id="small"),
+        pytest.param(_data_p(), 2708, id="p"),
+        pytest.param(_data_s(), 2738, id="s"),
     ],
 )
 def test_solve_b(input_str, expected):
