@@ -1,0 +1,10 @@
+$ cd /
+$ ls
+dir a
+$ cd a
+$ ls
+dir a
+50000000 a.txt
+$ cd a
+$ ls
+99999 a.txt
