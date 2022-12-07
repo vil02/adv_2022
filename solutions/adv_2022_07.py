@@ -47,9 +47,8 @@ def parse_input(in_str):
     for cur_line in in_str.splitlines():
         if cur_line.startswith("$ cd"):
             cur_dir = _change_dir(cur_dir, _get_dir_name_from_cd(cur_line))
-        elif not cur_line.startswith("$"):
-            if _is_file(cur_line):
-                res.append(_parse_file_line(_dir_to_str(cur_dir), cur_line))
+        elif not cur_line.startswith("$") and _is_file(cur_line):
+            res.append(_parse_file_line(_dir_to_str(cur_dir), cur_line))
     return res
 
 
