@@ -72,17 +72,17 @@ def test_solve_a(input_str, expected):
     assert sol.solve_a(input_str) == expected
 
 
-@pytest.mark.parametrize(
-    "in_pos,expected",
-    [
-        ((2, 1), 4),
-        ((2, 3), 8),
-        ((0, 2), 0),
-    ],
-)
-def test_compute_scenic_score(in_pos, expected):
-    """tests compute_scenic_score with example height data"""
-    assert sol.compute_scenic_score(sol.parse_input(_data_small()), in_pos) == expected
+def test_compute_all_scenic_scores():
+    """tests compute_all_scenic_scores with example height data"""
+    actual = sol.compute_all_scenic_scores(sol.parse_input(_data_small()))
+    expected = [
+        [0, 0, 0, 0, 0],
+        [0, 1, 4, 1, 0],
+        [0, 6, 1, 2, 0],
+        [0, 1, 8, 3, 0],
+        [0, 0, 0, 0, 0],
+    ]
+    assert actual == expected
 
 
 @pytest.mark.parametrize(
