@@ -1,6 +1,7 @@
 """solution of adv_2022_10"""
 
 import collections
+import functools
 
 Addx = collections.namedtuple("Addx", ["value"])
 
@@ -57,23 +58,22 @@ def signal_strength(cycle_num, x_value):
     return cycle_num * x_value
 
 
+@functools.lru_cache(maxsize=None)
+def _compute_saved_cycles(in_str):
+    computer = Computer()
+    computer.run(parse_input(in_str))
+    return computer.saved_cycles
+
+
 def solve_a(in_str):
     """returns the solution for part_a"""
-    data = parse_input(in_str)
-    computer = Computer()
-    computer.run(data)
-    return sum(
-        signal_strength(_, computer.saved_cycles[_])
-        for _ in (20, 60, 100, 140, 180, 220)
-    )
+    saved_cycles = _compute_saved_cycles(in_str)
+    return sum(signal_strength(_, saved_cycles[_]) for _ in range(20, 221, 40))
 
 
 def solve_b(in_str):
     """returns the solution for part_b"""
-    data = parse_input(in_str)
-    computer = Computer()
-    computer.run(data)
-    saved_cycles = computer.saved_cycles
+    saved_cycles = _compute_saved_cycles(in_str)
 
     res = []
     cur_line = []
