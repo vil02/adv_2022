@@ -58,7 +58,7 @@ def signal_strength(cycle_num, x_value):
     return cycle_num * x_value
 
 
-@functools.lru_cache
+@functools.lru_cache(maxsize=None)
 def _compute_saved_cycles(in_str):
     computer = Computer()
     computer.run(parse_input(in_str))
