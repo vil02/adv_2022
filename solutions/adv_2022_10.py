@@ -68,9 +68,7 @@ def _compute_saved_cycles(in_str):
 def solve_a(in_str):
     """returns the solution for part_a"""
     saved_cycles = _compute_saved_cycles(in_str)
-    return sum(
-        signal_strength(_, saved_cycles[_]) for _ in (20, 60, 100, 140, 180, 220)
-    )
+    return sum(signal_strength(_, saved_cycles[_]) for _ in range(20, 221, 40))
 
 
 def solve_b(in_str):
