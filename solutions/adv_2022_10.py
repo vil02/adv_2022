@@ -1,6 +1,7 @@
 """solution of adv_2022_10"""
 
 import collections
+import functools
 
 Addx = collections.namedtuple("Addx", ["value"])
 
@@ -57,6 +58,7 @@ def signal_strength(cycle_num, x_value):
     return cycle_num * x_value
 
 
+@functools.lru_cache
 def _compute_saved_cycles(in_str):
     computer = Computer()
     computer.run(parse_input(in_str))
