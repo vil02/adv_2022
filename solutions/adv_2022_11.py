@@ -5,8 +5,14 @@ import math
 import functools
 
 
+def _gcd(*args):
+    if len(args) == 2:
+        return math.gcd(*args)
+    return math.gcd(args[0], _gcd(*args[1:]))
+
+
 def _lcm(*args):
-    return functools.reduce(lambda a, b: a * b, args) / math.gcd(*args)
+    return functools.reduce(lambda a, b: a * b, args) / _gcd(*args)
 
 
 def get_multiply_by(in_multip):
