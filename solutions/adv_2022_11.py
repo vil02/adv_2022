@@ -18,28 +18,24 @@ def _lcm(*args):
 def get_multiply_by(in_multip):
     """returns a function: x -> x*in_change"""
 
-    def inner(in_val):
+    def _inner(in_val):
         return in_val * in_multip
 
-    return inner
+    return _inner
 
 
 def get_increase_by(in_change):
     """returns a function: x -> x + in_change"""
 
-    def inner(in_val):
+    def _inner(in_val):
         return in_val + in_change
 
-    return inner
+    return _inner
 
 
 def get_make_square():
     """returns a function: x -> x*x"""
-
-    def inner(in_val):
-        return in_val * in_val
-
-    return inner
+    return lambda x: x * x
 
 
 Transfer = collections.namedtuple("Transfer", ["target", "item"])
@@ -220,10 +216,10 @@ def solve_b(in_str):
     """returns the solution for part_b"""
     _, mod_val = parse_input(in_str, ItemManipulatorA)
 
-    def get_manipulator_b(in_operation):
+    def _get_manipulator_b(in_operation):
         return ItemManipulatorB(in_operation, mod_val)
 
-    monkeys, _ = parse_input(in_str, get_manipulator_b)
+    monkeys, _ = parse_input(in_str, _get_manipulator_b)
 
     make_rounds(monkeys, 10000)
     nums = sorted([_.inspected_items for _ in monkeys])
