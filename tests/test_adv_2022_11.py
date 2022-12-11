@@ -15,29 +15,38 @@ def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
 
-def test_parse_input():
+def _get_dummy_manipulator_b(in_operation):
+    return sol.ItemManipulatorB(in_operation, 23)
+
+
+@pytest.mark.parametrize(
+    "get_manipulator",
+    [
+        pytest.param(sol.ItemManipulatorA, id="sol.ItemManipulatorA"),
+        pytest.param(_get_dummy_manipulator_b, id="dummy_manipulator_b"),
+    ],
+)
+def test_parse_input(get_manipulator):
     """tests parse_input with the example data"""
-    actual_monkeys, acutal_mod_val = sol.parse_input(
-        _data_small(), sol.ItemManipulatorA
-    )
+    actual_monkeys, acutal_mod_val = sol.parse_input(_data_small(), get_manipulator)
     expected_monkeys = [
         sol.Monkey(
             [79, 98],
-            sol.ItemManipulatorA(sol.get_multiply_by(19)),
+            get_manipulator(sol.get_multiply_by(19)),
             sol.Thrower(23, 2, 3),
         ),
         sol.Monkey(
             [54, 65, 75, 74],
-            sol.ItemManipulatorA(sol.get_increase_by(6)),
+            get_manipulator(sol.get_increase_by(6)),
             sol.Thrower(19, 2, 0),
         ),
         sol.Monkey(
             [79, 60, 97],
-            sol.ItemManipulatorA(sol.get_make_square()),
+            get_manipulator(sol.get_make_square()),
             sol.Thrower(13, 1, 3),
         ),
         sol.Monkey(
-            [74], sol.ItemManipulatorA(sol.get_increase_by(3)), sol.Thrower(17, 0, 1)
+            [74], get_manipulator(sol.get_increase_by(3)), sol.Thrower(17, 0, 1)
         ),
     ]
     expected_mod_val = 23 * 19 * 13 * 17
