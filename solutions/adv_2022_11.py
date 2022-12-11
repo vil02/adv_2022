@@ -2,6 +2,11 @@
 
 import collections
 import math
+import functools
+
+
+def _lcm(*args):
+    return functools.reduce(lambda a, b: a * b, args) / math.gcd(*args)
 
 
 def get_multiply_by(in_multip):
@@ -180,7 +185,7 @@ def parse_input(in_str, get_manipulator):
             for num, block in enumerate(in_str.split("\n\n"))
         ]
     )
-    return monkeys, math.lcm(*divisors)
+    return monkeys, _lcm(*divisors)
 
 
 def make_round(monkeys):
