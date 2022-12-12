@@ -128,7 +128,7 @@ class Monkey:
 
 
 def parse_input(in_str, get_manipulator):
-    """parses the input into..."""
+    """returns a list of Monkeys and mod_val"""
 
     def _remove_prefix(in_prefix, in_str):
         assert in_str.startswith(in_prefix)
