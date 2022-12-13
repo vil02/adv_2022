@@ -66,7 +66,7 @@ def _is_in_order_lists(left, right):
     if not left and not right:
         return 0
     cur_res = is_in_order(left[0], right[0])
-    if cur_res == 0 and len(left) > 0 and len(right) > 0:
+    if cur_res == 0 and left and right:
         return is_in_order(left[1:], right[1:])
     return cur_res
 
