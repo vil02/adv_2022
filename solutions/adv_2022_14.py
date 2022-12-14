@@ -4,12 +4,12 @@
 def parse_input(in_str):
     """returns a tuple of tuples representing the wall corners"""
 
-    def proc_pair(in_str):
+    def _proc_pair_str(in_str):
         x_pos, y_pos = in_str.split(",")
         return (int(x_pos), int(y_pos))
 
     def _proc_single_line(in_line):
-        return tuple(proc_pair(_) for _ in in_line.split(" -> "))
+        return tuple(_proc_pair_str(_) for _ in in_line.split(" -> "))
 
     return tuple(_proc_single_line(_) for _ in in_str.splitlines())
 
