@@ -1,6 +1,7 @@
 """tests of adv_2022_15"""
 
 import pytest
+import sympy
 import general_utils as gu
 import solutions.adv_2022_15 as sol
 
@@ -40,24 +41,24 @@ def test_parse_input():
 @pytest.mark.parametrize(
     "input_row,expected",
     [
-        (-4, None),
-        (-3, None),
-        (-2, (8, 8)),
-        (-1, (7, 9)),
-        (0, (6, 10)),
-        (1, (5, 11)),
-        (2, (4, 12)),
-        (3, (3, 13)),
-        (4, (2, 14)),
-        (5, (1, 15)),
-        (6, (0, 16)),
-        (7, (-1, 17)),
-        (8, (0, 16)),
-        (9, (1, 15)),
-        (15, (7, 9)),
-        (16, (8, 8)),
-        (17, None),
-        (18, None),
+        (-4, sympy.S.EmptySet),
+        (-3, sympy.S.EmptySet),
+        (-2, sympy.Interval(8, 8)),
+        (-1, sympy.Interval(7, 9)),
+        (0, sympy.Interval(6, 10)),
+        (1, sympy.Interval(5, 11)),
+        (2, sympy.Interval(4, 12)),
+        (3, sympy.Interval(3, 13)),
+        (4, sympy.Interval(2, 14)),
+        (5, sympy.Interval(1, 15)),
+        (6, sympy.Interval(0, 16)),
+        (7, sympy.Interval(-1, 17)),
+        (8, sympy.Interval(0, 16)),
+        (9, sympy.Interval(1, 15)),
+        (15, sympy.Interval(7, 9)),
+        (16, sympy.Interval(8, 8)),
+        (17, sympy.S.EmptySet),
+        (18, sympy.S.EmptySet),
     ],
 )
 def test_get_covered_interval(input_row, expected):

@@ -1,6 +1,7 @@
 """solution of adv_2022_15"""
 
 import re
+import sympy
 
 
 class SensorReading:
@@ -18,14 +19,14 @@ class SensorReading:
     def get_covered_interval(self, in_row):
         size_x = self._radius - abs(in_row - self.sensor[1])
         if size_x < 0:
-            return None
+            return sympy.S.EmptySet
         x_min = -size_x + self.sensor[0]
         x_max = size_x + self.sensor[0]
         assert self.is_in_radius((x_min, in_row))
         assert self.is_in_radius((x_max, in_row))
         assert not self.is_in_radius((x_min - 1, in_row))
         assert not self.is_in_radius((x_max + 1, in_row))
-        return (x_min, x_max)
+        return sympy.Interval(x_min, x_max)
 
     @property
     def sensor(self):
@@ -66,15 +67,9 @@ def manhattan_dist(pos_a, pos_b):
 
 
 def count_safe_in_row(in_sensor_list, in_row):
-    intervals = [
-        _.get_covered_interval(in_row)
-        for _ in in_sensor_list
-        if _.get_covered_interval(in_row) is not None
-    ]
+    covered = sympy.Union(*[_.get_covered_interval(in_row) for _ in in_sensor_list])
     beacons_in_row = set(_.beacon for _ in in_sensor_list if _.beacon[1] == in_row)
-
-    list_of_sets = [set(range(_[0], _[1] + 1)) for _ in intervals]
-    return len(set.union(*list_of_sets)) - len(beacons_in_row)
+    return len(covered.intersect(sympy.S.Integers)) - len(beacons_in_row)
 
 
 def solve_a(in_str):
