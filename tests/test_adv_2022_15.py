@@ -88,7 +88,7 @@ def test_find_distress_beacon_fine():
 
 
 def test_find_distress_beacon_fine_when_no_solution():
-    """tests find_distress_beacon with example data"""
+    """find_distress_beacon returns None when there is no solution"""
     assert (
         sol.find_distress_beacon_fine(sol.parse_input(_data_small()), 0, 20, 0, 10)
         is None
