@@ -87,6 +87,14 @@ def test_find_distress_beacon_fine():
     )
 
 
+def test_find_distress_beacon_fine_when_no_solution():
+    """tests find_distress_beacon with example data"""
+    assert (
+        sol.find_distress_beacon_fine(sol.parse_input(_data_small()), 0, 20, 0, 10)
+        is None
+    )
+
+
 def test_find_distress_beacon():
     """tests find_distress_beacon with example data"""
     assert sol.find_distress_beacon(sol.parse_input(_data_small()), 0, 20, 0, 20) == (
