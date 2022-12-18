@@ -19,7 +19,7 @@ class SensorReading:
         return manhattan_dist(in_pos, self.sensor) <= self._radius
 
     def __eq__(self, other):
-        return self.sensor == other.sensor and other.beacon == other.beacon
+        return self.sensor == other.sensor and self.beacon == other.beacon
 
     def get_covered_interval(self, in_row):
         """returns the interwal covered by this sensor in given row"""
