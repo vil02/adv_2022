@@ -62,37 +62,52 @@ def test_parse_input():
     ],
 )
 def test_get_covered_interval(input_row, expected):
+    """tests covered_interval"""
     sensor = sol.SensorReading((8, 7), (2, 10))
     assert sensor.get_covered_interval(input_row) == expected
 
 
 def test_count_safe_in_row():
+    """tests count_safe_in_row with example data"""
     assert sol.count_safe_in_row(sol.parse_input(_data_small()), 10) == 26
 
 
 def test_solve_a():
+    """tests solve_a"""
     assert sol.solve_a(_data_p()) == 4827924
 
 
-# @pytest.mark.parametrize(
-#     "input_str,expected",
-#     [
-#         pytest.param(_data_small(), 10, id="small"),
-#         pytest.param(_data_p(), 11, id="p"),
-#     ],
-# )
-# def test_solve_a(input_str, expected):
-#     """tests solve_a"""
-#     assert sol.solve_a(input_str) == expected
-#
-#
-# @pytest.mark.parametrize(
-#     "input_str,expected",
-#     [
-#         pytest.param(_data_small(), 20, id="small"),
-#         pytest.param(_data_p(), 22, id="p"),
-#     ],
-# )
-# def test_solve_b(input_str, expected):
-#     """tests solve_b"""
-#     assert sol.solve_b(input_str) == expected
+def test_find_distress_beacon_fine():
+    """tests find_distress_beacon with example data"""
+    assert sol.find_distress_beacon_fine(
+        sol.parse_input(_data_small()), 0, 20, 0, 20
+    ) == (
+        14,
+        11,
+    )
+
+
+def test_find_distress_beacon():
+    """tests find_distress_beacon with example data"""
+    assert sol.find_distress_beacon(sol.parse_input(_data_small()), 0, 20, 0, 20) == (
+        14,
+        11,
+    )
+
+
+@pytest.mark.parametrize(
+    "input_x,input_y,expected",
+    [
+        (14, 11, 56000011),
+        (10, 2, 40000002),
+        (1, 0, 4000000),
+    ],
+)
+def test_tuning_frequency(input_x, input_y, expected):
+    """tests tuning_frequency"""
+    assert sol.tuning_frequency(input_x, input_y) == expected
+
+
+def test_solve_b():
+    """tests solve_b"""
+    assert sol.solve_b(_data_p()) == 12977110973564
