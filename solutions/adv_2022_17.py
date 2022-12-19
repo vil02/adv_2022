@@ -90,7 +90,8 @@ def _move_to_start_pos(in_rocks, in_shape):
     return _shift_shape(in_shape, (2, rocks_top + 3 - shape_bottom + 1))
 
 
-def _drop_single(in_rocks, shape, gen_moves):
+def drop_single(in_rocks, shape, gen_moves):
+    """returns the new rocks confiuration after dropping a single block"""
     shape = _move_to_start_pos(in_rocks, shape)
     res = None
     for _ in gen_moves:
@@ -132,7 +133,7 @@ def _simulate(in_rocks, generators, total_number_of_blocks, cache):
         block = next(generators.blocks)
         initial_top = _most_up(rocks)
         initial_normalised_rocks = _normalise(rocks)
-        rocks = _drop_single(rocks, block, generators.moves)
+        rocks = drop_single(rocks, block, generators.moves)
         rocks = _optimise_rocks(rocks)
         gained_height = _most_up(rocks) - initial_top
         normalised_rocks = _normalise(rocks)
