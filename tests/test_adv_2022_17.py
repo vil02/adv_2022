@@ -81,11 +81,11 @@ def test_parse_input():
 def test_drop_single_returns_none_when_generator_exhausted():
     """checks that drop_single returns None when gen_moves exhausted"""
 
-    def move_generator():
+    def _move_generator():
         yield "<"
         yield "<"
 
-    assert sol.drop_single(set(), {(0, 0), (0, 1)}, move_generator()) is None
+    assert sol.drop_single(set(), {(0, 0), (0, 1)}, _move_generator()) is None
 
 
 @pytest.mark.parametrize(
