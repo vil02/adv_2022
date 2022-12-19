@@ -159,8 +159,9 @@ def _compute_cycle_data(in_rocks, cache):
         cur_rocks = cache.next_state[cur_rocks]
         cycle_length += 1
 
-    CycleData = collections.namedtuple("CycleData", ["gained_height", "cycle_length"])
-    return CycleData(total_gained_height, cycle_length)
+    return collections.namedtuple("CycleData", ["gained_height", "cycle_length"])(
+        total_gained_height, cycle_length
+    )
 
 
 def _compute_gained_height(in_rocks, cache, number_of_iterations):
