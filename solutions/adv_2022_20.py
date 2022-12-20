@@ -1,7 +1,5 @@
 """solution of adv_2022_20"""
 
-import itertools
-
 
 def parse_input(in_str):
     """parses the input into a tuple of ints"""
@@ -12,16 +10,11 @@ def mark_duplicates(in_data):
     """
     returns a tuple of unique pairs such that the first entries are values from in_data
     """
-
     res = []
-    seen = set()
+    repeated = {}
     for _ in in_data:
-        for rep in itertools.count(0):
-            cur_res = (_, rep)
-            if cur_res not in seen:
-                res.append(cur_res)
-                seen.add(cur_res)
-                break
+        repeated[_] = repeated.get(_, -1) + 1
+        res.append((_, repeated[_]))
     return tuple(res)
 
 
