@@ -34,10 +34,7 @@ jobs:
 
       - name: Generate coverage data
         run: |
-          poetry run coverage run --branch -m pytest
-          poetry run coverage xml --omit="tests/*"
-          poetry run coverage html --omit="tests/*"
-          poetry run coverage report --omit="tests/*"
+          ./generate_coverage_data.sh
 
       - name: Fix code coverage paths for SonarCloud
         # yamllint disable rule:line-length
