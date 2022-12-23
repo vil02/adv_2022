@@ -2,6 +2,7 @@
 
 import collections
 import math
+import functools
 
 
 def _to_pos(in_x, in_y):
@@ -25,6 +26,7 @@ def _make_shift(in_pos, in_shift):
     return tuple(sum(_) for _ in zip(in_pos, in_shift))
 
 
+@functools.lru_cache(maxsize=1)
 def _get_dirs_dict():
     res = {
         "N": (0, -1),
