@@ -78,8 +78,8 @@ class Elf:
     def propose_pos(self, in_elves_positions, in_dir_names):
         """makes a position proposal"""
         self.new_pos = None
-        neighbours = frozenset(_get_all_neighbours(self.pos))
-        if len(neighbours.intersection(in_elves_positions)) == 0:
+        neighbours = _get_all_neighbours(self.pos)
+        if all(_ not in in_elves_positions for _ in neighbours):
             return self.new_pos
 
         for cur_dir_name in in_dir_names:
