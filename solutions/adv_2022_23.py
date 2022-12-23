@@ -19,7 +19,7 @@ def parse_input(in_str):
                 res.add(_to_pos(x_pos, y_pos))
             else:
                 assert char == "."
-    return frozenset(res)
+    return res
 
 
 def _make_shift(in_pos, in_shift):
@@ -99,24 +99,44 @@ class Elf:
         self.new_pos = None
 
 
-def single_round(elves, dir_names):
-    """makes a single round of moves"""
-    new_positions = {}
-    elves_positions = {_.pos for _ in elves}
+class ElvesMover:
+    """elves mover"""
 
-    for cur_elf in elves:
-        new_pos = cur_elf.propose_pos(elves_positions, dir_names)
-        if new_pos is not None:
-            new_positions[new_pos] = new_positions.get(new_pos, 0) + 1
+    def __init__(self, in_positions):
+        self._positions = in_positions
+        self.dir_names = [get_dir_name(_) for _ in range(4)]
+        self._elves = [Elf(_) for _ in self.positions]
 
-    any_moved = False
-    for cur_elf in elves:
-        if cur_elf.new_pos is not None and new_positions[cur_elf.new_pos] == 1:
-            cur_elf.move()
-            any_moved = True
+    def _update_dirs(self):
+        self.dir_names = self.dir_names[1:] + [self.dir_names[0]]
 
-    dir_names.append(dir_names.pop(0))
-    return any_moved
+    def _first_half(self):
+        new_positions = {}
+        for cur_elf in self._elves:
+            new_pos = cur_elf.propose_pos(self.positions, self.dir_names)
+            if new_pos is not None:
+                new_positions[new_pos] = new_positions.get(new_pos, 0) + 1
+        return new_positions
+
+    def _second_half(self, in_new_positions):
+        any_moved = False
+        for cur_elf in self._elves:
+            if cur_elf.new_pos is not None and in_new_positions[cur_elf.new_pos] == 1:
+                self._positions.remove(cur_elf.pos)
+                cur_elf.move()
+                self._positions.add(cur_elf.pos)
+                any_moved = True
+        self._update_dirs()
+        return any_moved
+
+    def single_round(self):
+        """makes a single round of moves"""
+        return self._second_half(self._first_half())
+
+    @property
+    def positions(self):
+        """_positions getter"""
+        return self._positions
 
 
 def _update_bound(in_fun, in_bound, in_pos):
@@ -135,23 +155,20 @@ def _calculate_bounds(in_positions):
 
 def solve_a(in_str):
     """returns the solution for part_a"""
-    elves = [Elf(_) for _ in parse_input(in_str)]
-    dir_names = [get_dir_name(_) for _ in range(4)]
+    elves_mover = ElvesMover(parse_input(in_str))
     for _ in range(10):
-        single_round(elves, dir_names)
-    positions = [_.pos for _ in elves]
-    bounds = _calculate_bounds(positions)
+        elves_mover.single_round()
+    bounds = _calculate_bounds(elves_mover.positions)
 
     return (bounds.maxs[0] - bounds.mins[0] + 1) * (
         bounds.maxs[1] - bounds.mins[1] + 1
-    ) - len(elves)
+    ) - len(elves_mover.positions)
 
 
 def solve_b(in_str):
     """returns the solution for part_b"""
-    elves = [Elf(_) for _ in parse_input(in_str)]
-    dir_names = [get_dir_name(_) for _ in range(4)]
+    elves_mover = ElvesMover(parse_input(in_str))
     round_num = 1
-    while single_round(elves, dir_names):
+    while elves_mover.single_round():
         round_num += 1
     return round_num

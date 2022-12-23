@@ -11,6 +11,10 @@ def _data_small():
     return gu.read_input(_DAY_NUM, "small")
 
 
+def _data_bigger():
+    return gu.read_input(_DAY_NUM, "bigger")
+
+
 def _data_very_small():
     return gu.read_input(_DAY_NUM, "very_small")
 
@@ -19,24 +23,29 @@ def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
 
-def test_single_round():
+@pytest.mark.parametrize(
+    "data_postfix, round_limit",
+    [("very_small", 3), ("bigger", 5)],
+)
+def test_single_round(data_postfix, round_limit):
     """tests single_round with very_small example data"""
-    elves = [sol.Elf(_) for _ in sol.parse_input(_data_very_small())]
-    dir_names = [sol.get_dir_name(_) for _ in range(4)]
-    for _ in range(3):
-        sol.single_round(elves, dir_names)
+    elves_mover = sol.ElvesMover(
+        sol.parse_input(gu.read_input(_DAY_NUM, f"{data_postfix}"))
+    )
+    for _ in range(round_limit):
+        elves_mover.single_round()
         expected_positions = sol.parse_input(
-            gu.read_input(_DAY_NUM, f"very_small_{_+1}")
+            gu.read_input(_DAY_NUM, f"{data_postfix}_{_+1}")
         )
-        actual_positions = frozenset(_.pos for _ in elves)
 
-        assert actual_positions == expected_positions
+        assert elves_mover.positions == expected_positions
 
 
 @pytest.mark.parametrize(
     "input_str,expected",
     [
         pytest.param(_data_small(), 110, id="small"),
+        pytest.param(_data_bigger(), 110, id="bigger"),
         pytest.param(_data_p(), 3757, id="p"),
     ],
 )
@@ -49,6 +58,7 @@ def test_solve_a(input_str, expected):
     "input_str,expected",
     [
         pytest.param(_data_small(), 20, id="small"),
+        pytest.param(_data_bigger(), 20, id="bigger"),
         pytest.param(_data_p(), 918, id="p"),
     ],
 )
