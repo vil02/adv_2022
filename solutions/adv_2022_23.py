@@ -23,7 +23,7 @@ def parse_input(in_str):
 
 
 def _make_shift(in_pos, in_shift):
-    return tuple(sum(_) for _ in zip(in_pos, in_shift))
+    return (in_pos[0] + in_shift[0], in_pos[1] + in_shift[1])
 
 
 @functools.lru_cache(maxsize=1)
