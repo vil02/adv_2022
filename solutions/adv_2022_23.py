@@ -42,17 +42,9 @@ def _get_dirs_dict():
     return res
 
 
-def _get_dir(in_dir_name):
-    return _get_dirs_dict()[in_dir_name]
-
-
 def get_dir_name(in_num):
     """returns the direction name based on a direction number"""
     return {0: "N", 1: "S", 2: "W", 3: "E"}[in_num]
-
-
-def _get_all_neighbours(in_pos):
-    return tuple(_make_shift(in_pos, _) for _ in _get_dirs_dict().values())
 
 
 def _get_similar_dirs(in_dir_name):
