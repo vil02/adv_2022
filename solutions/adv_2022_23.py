@@ -23,7 +23,7 @@ def parse_input(in_str):
 
 
 def _make_shift(in_pos, in_shift):
-    return tuple(sum(_) for _ in zip(in_pos, in_shift))
+    return (in_pos[0] + in_shift[0], in_pos[1] + in_shift[1])
 
 
 @functools.lru_cache(maxsize=1)
@@ -42,17 +42,9 @@ def _get_dirs_dict():
     return res
 
 
-def _get_dir(in_dir_name):
-    return _get_dirs_dict()[in_dir_name]
-
-
 def get_dir_name(in_num):
     """returns the direction name based on a direction number"""
     return {0: "N", 1: "S", 2: "W", 3: "E"}[in_num]
-
-
-def _get_all_neighbours(in_pos):
-    return tuple(_make_shift(in_pos, _) for _ in _get_dirs_dict().values())
 
 
 def _get_similar_dirs(in_dir_name):
@@ -62,12 +54,6 @@ def _get_similar_dirs(in_dir_name):
         "W": ("W", "NW", "SW"),
         "E": ("E", "NE", "SE"),
     }[in_dir_name]
-
-
-def _are_all_empty(in_pos, in_dir_names, in_elves_positions):
-    return all(
-        _make_shift(in_pos, _get_dir(_)) not in in_elves_positions for _ in in_dir_names
-    )
 
 
 class Elf:
@@ -80,15 +66,21 @@ class Elf:
     def propose_pos(self, in_elves_positions, in_dir_names):
         """makes a position proposal"""
         self.new_pos = None
-        neighbours = _get_all_neighbours(self.pos)
-        if all(_ not in in_elves_positions for _ in neighbours):
+        neighbours = {
+            dir_name: _make_shift(self.pos, dir_shift)
+            for dir_name, dir_shift in _get_dirs_dict().items()
+        }
+        open_dirs = {
+            dir_name
+            for dir_name, pos in neighbours.items()
+            if pos not in in_elves_positions
+        }
+        if len(open_dirs) == 8:
             return self.new_pos
 
         for cur_dir_name in in_dir_names:
-            if _are_all_empty(
-                self.pos, _get_similar_dirs(cur_dir_name), in_elves_positions
-            ):
-                self.new_pos = _make_shift(self.pos, _get_dir(cur_dir_name))
+            if all(_ in open_dirs for _ in _get_similar_dirs(cur_dir_name)):
+                self.new_pos = neighbours[cur_dir_name]
                 break
         return self.new_pos
 
