@@ -2,6 +2,7 @@
 
 import math
 import collections
+import dataclasses
 
 
 def _lcm(in_a, in_b):
@@ -16,12 +17,16 @@ def _make_shift(in_pos, in_shift):
     return tuple(sum(_) for _ in zip(in_pos, in_shift))
 
 
+@dataclasses.dataclass(init=False)
 class Blizzard:
+    """represents a blizzard type"""
+
     def __init__(self, dir_name):
         self.dir = {">": (1, 0), "<": (-1, 0), "^": (0, -1), "v": (0, 1)}[dir_name]
 
 
 def new_blizzard_pos(in_size, in_pos, in_blizzard):
+    """returns the new blizzart positions"""
     return _make_shift_mod(in_pos, in_blizzard.dir, in_size)
 
 
@@ -32,23 +37,29 @@ def _compute_new_positions(in_size, in_cur_positions, in_blizzard_types):
     )
 
 
-def generate_all_blizzard_positions(in_size, in_blizzards):
+def _generate_all_blizzard_positions(in_size, in_blizzards):
     max_age = _lcm(*in_size)
     res = []
     cur_positions = tuple(_[0] for _ in in_blizzards)
     blizzard_types = [_[1] for _ in in_blizzards]
-    for cur_age in range(max_age):
+    for _ in range(max_age):
         res.append(frozenset(cur_positions))
         cur_positions = _compute_new_positions(in_size, cur_positions, blizzard_types)
     assert frozenset(cur_positions) == res[0]
     return tuple(res)
 
 
+@dataclasses.dataclass(frozen=True)
 class BlizzardPositions:
-    def __init__(self, in_positions):
-        self._positions = in_positions
+    """reader for the blizzards positions in all times"""
+
+    _positions: tuple
 
     def is_empty(self, in_age, in_pos):
+        """
+        Checks if the given position at given time is safe/empty.
+        Returns true iff it is.
+        """
         return in_pos not in self._positions[in_age % len(self._positions)]
 
 
@@ -61,6 +72,7 @@ def _get_end_pos(in_size):
 
 
 def position_candidates(in_size, in_pos):
+    """returns all positions accesible from given one"""
     if in_pos == _get_start_pos():
         return [(0, 0), in_pos]
 
@@ -83,11 +95,10 @@ def _to_key(in_pos, in_time):
 
 
 def find_minimal_time(in_size, blizzard_positions, start_pos, target_pos, start_time):
+    """returns the minimal time neded to move from start_pos to target_pos"""
     known = set()
     active = [_to_key(start_pos, 0)]
     best_time = math.inf
-    max_x = 0
-    max_y = 0
     while active:
         cur_key = active.pop(0)
         if cur_key in known:
@@ -100,9 +111,6 @@ def find_minimal_time(in_size, blizzard_positions, start_pos, target_pos, start_
         if cur_time > best_time:
             continue
 
-        max_x = max(max_x, cur_pos[0])
-        max_y = max(max_y, cur_pos[1])
-
         assert blizzard_positions.is_empty(cur_time + start_time, cur_pos)
         known.add(cur_key)
 
@@ -113,7 +121,7 @@ def find_minimal_time(in_size, blizzard_positions, start_pos, target_pos, start_
 
 
 def parse_input(in_str):
-    """parses the input into..."""
+    """parses the input into namedtuple with size and blizzards"""
 
     lines = in_str.splitlines()
     height = len(lines) - 2
@@ -134,35 +142,51 @@ def parse_input(in_str):
     )
 
 
+def prepare_valley(in_str):
+    """returns all valley data described by in_str"""
+    parsed_data = parse_input(in_str)
+    blizzard_positions = BlizzardPositions(
+        _generate_all_blizzard_positions(parsed_data.size, parsed_data.blizzards)
+    )
+    return collections.namedtuple("ValleyData", ["size", "blizzard_positions"])(
+        parsed_data.size, blizzard_positions
+    )
+
+
 def solve_a(in_str):
     """returns the solution for part_a"""
-    data = parse_input(in_str)
-    bliz_positions = BlizzardPositions(
-        generate_all_blizzard_positions(data.size, data.blizzards)
-    )
+    valley = prepare_valley(in_str)
     return find_minimal_time(
-        data.size, bliz_positions, _get_start_pos(), _get_end_pos(data.size), 0
+        valley.size,
+        valley.blizzard_positions,
+        _get_start_pos(),
+        _get_end_pos(valley.size),
+        0,
     )
 
 
 def solve_b(in_str):
     """returns the solution for part_b"""
-    data = parse_input(in_str)
-    bliz_positions = BlizzardPositions(
-        generate_all_blizzard_positions(data.size, data.blizzards)
-    )
-
+    valley = prepare_valley(in_str)
     time_a = find_minimal_time(
-        data.size, bliz_positions, _get_start_pos(), _get_end_pos(data.size), 0
+        valley.size,
+        valley.blizzard_positions,
+        _get_start_pos(),
+        _get_end_pos(valley.size),
+        0,
     )
     time_b = find_minimal_time(
-        data.size, bliz_positions, _get_end_pos(data.size), _get_start_pos(), time_a
+        valley.size,
+        valley.blizzard_positions,
+        _get_end_pos(valley.size),
+        _get_start_pos(),
+        time_a,
     )
     time_c = find_minimal_time(
-        data.size,
-        bliz_positions,
+        valley.size,
+        valley.blizzard_positions,
         _get_start_pos(),
-        _get_end_pos(data.size),
+        _get_end_pos(valley.size),
         time_a + time_b,
     )
     return time_a + time_b + time_c
