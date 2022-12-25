@@ -53,13 +53,13 @@ _EXAMPLE_SNAFU_DECIMAL = [
 
 @pytest.mark.parametrize("input_data", _EXAMPLE_SNAFU_DECIMAL)
 def test_snafu_to_decimal(input_data):
-    """tests solve_a"""
+    """tests snafu_to_decimal"""
     assert sol.snafu_to_decimal(input_data.snafu) == input_data.decimal
 
 
 @pytest.mark.parametrize("input_data", _EXAMPLE_SNAFU_DECIMAL)
 def test_decimal_to_snafu(input_data):
-    """tests solve_a"""
+    """tests decimal_to_snaf"""
     assert sol.decimal_to_snafu(input_data.decimal) == input_data.snafu
 
 
