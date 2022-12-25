@@ -19,7 +19,7 @@ def decimal_to_snafu(in_decimal):
     """converts a decmal int into snafu"""
     base = 5
     res = []
-    special_ditigs_dict = {5: "0", 4: "-", 3: "="}
+    special_digits_dict = {5: "0", 4: "-", 3: "="}
     carry_over = 0
     cur_val = in_decimal
     while cur_val:
@@ -28,8 +28,8 @@ def decimal_to_snafu(in_decimal):
 
         cur_digit += carry_over
         carry_over = 0
-        if cur_digit in special_ditigs_dict:
-            cur_digit = special_ditigs_dict[cur_digit]
+        if cur_digit in special_digits_dict:
+            cur_digit = special_digits_dict[cur_digit]
             carry_over = 1
         res.append(str(cur_digit))
 
