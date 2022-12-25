@@ -1,7 +1,7 @@
 """tests of adv_2022_25"""
 
-import pytest
 import collections
+import pytest
 import general_utils as gu
 import solutions.adv_2022_25 as sol
 
