@@ -17,21 +17,19 @@ def snafu_to_decimal(in_snafu):
 
 def decimal_to_snafu(in_decimal):
     """converts a decmal int into snafu"""
-    carry_over = 0
-    res = []
-    cur_val = in_decimal
     base = 5
+    res = []
+    special_ditigs_dict = {5: "0", 4: "-", 3: "="}
+    carry_over = 0
+    cur_val = in_decimal
     while cur_val:
         cur_digit = cur_val % base
         cur_val //= base
 
         cur_digit += carry_over
         carry_over = 0
-        if cur_digit in {3, 4}:
-            cur_digit = "=" if cur_digit == 3 else "-"
-            carry_over = 2 if cur_digit == 3 else 1
-        elif cur_digit == 5:
-            cur_digit = "0"
+        if cur_digit in special_ditigs_dict:
+            cur_digit = special_ditigs_dict[cur_digit]
             carry_over = 1
         res.append(str(cur_digit))
 
