@@ -15,25 +15,16 @@ def snafu_to_decimal(in_snafu):
     return res
 
 
-def decimal_to_base_5(in_decimal):
+def decimal_to_snafu(in_decimal):
+    """converts a decmal int into snafu"""
+    carry_over = 0
     res = []
     cur_val = in_decimal
     base = 5
     while cur_val:
-        res.append(str(cur_val % base))
+        cur_digit = cur_val % base
         cur_val //= base
-    res = "".join(reversed(res))
-    assert int(res, base=base) == in_decimal
-    return res
 
-
-def decimal_to_snafu(in_decimal):
-    """converts a decmal int into snafu"""
-    reversed_base_5 = list(reversed(decimal_to_base_5(in_decimal)))
-    carry_over = 0
-    res = []
-    for _ in reversed_base_5:
-        cur_digit = int(_)
         cur_digit += carry_over
         carry_over = 0
         if cur_digit in {3, 4}:
@@ -43,6 +34,7 @@ def decimal_to_snafu(in_decimal):
             cur_digit = "0"
             carry_over = 1
         res.append(str(cur_digit))
+
     if carry_over:
         res.append(str(carry_over))
     return "".join(reversed(res))
