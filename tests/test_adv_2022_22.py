@@ -121,19 +121,19 @@ def test_parse_input():
 
 
 @pytest.mark.parametrize(
-    "input_pos, input_dir, expected",
+    "input_pos, input_dir, expected_pos, expected_dir",
     [
-        ((3, 5), (0, -1), (3, 8)),
-        ((1, 5), (-1, 0), (12, 5)),
-        ((2, 8), (0, 1), (2, 5)),
-        ((12, 5), (1, 0), (1, 5)),
+        ((3, 5), (0, -1), (3, 8), (0, -1)),
+        ((1, 5), (-1, 0), (12, 5), (-1, 0)),
+        ((2, 8), (0, 1), (2, 5), (0, 1)),
+        ((12, 5), (1, 0), (1, 5), (1, 0)),
     ],
 )
-def test_mover_a_wrap_pos(input_pos, input_dir, expected):
+def test_mover_a_wrap_pos(input_pos, input_dir, expected_pos, expected_dir):
     """tests wrap_pos in MoverA"""
     parse_res = sol.parse_input(_data_small())
     mover = sol.MoverA(parse_res.map, parse_res.start_pos)
-    assert mover.wrap_pos(input_pos, input_dir) == expected
+    assert mover.wrap_pos(input_pos, input_dir) == (expected_pos, expected_dir)
 
 
 @pytest.mark.parametrize(
@@ -185,15 +185,192 @@ def test_solve_a(input_str, expected):
     assert sol.solve_a(input_str) == expected
 
 
-#
-#
-# @pytest.mark.parametrize(
-#     "input_str,expected",
-#     [
-#         pytest.param(_data_small(), 20, id="small"),
-#         pytest.param(_data_p(), 22, id="p"),
-#     ],
-# )
-# def test_solve_b(input_str, expected):
-#     """tests solve_b"""
-#     assert sol.solve_b(input_str) == expected
+_SMALL_EDGE_WALKER = sol.EdgeWalker(sol.parse_input(_data_small()).map)
+
+
+@pytest.mark.parametrize(
+    "edge_walker, pos",
+    [
+        (_SMALL_EDGE_WALKER, (9, 1)),
+        (_SMALL_EDGE_WALKER, (9, 4)),
+        (_SMALL_EDGE_WALKER, (9, 5)),
+        (_SMALL_EDGE_WALKER, (8, 5)),
+        (_SMALL_EDGE_WALKER, (1, 5)),
+        (_SMALL_EDGE_WALKER, (1, 6)),
+        (_SMALL_EDGE_WALKER, (16, 12)),
+        (_SMALL_EDGE_WALKER, (16, 11)),
+        (_SMALL_EDGE_WALKER, (15, 12)),
+    ],
+)
+def test_is_on_edge_positive(edge_walker, pos):
+    """positive test of is_on_edge"""
+    assert edge_walker.is_on_edge(pos)
+
+
+@pytest.mark.parametrize(
+    "edge_walker, pos",
+    [
+        (_SMALL_EDGE_WALKER, (10, 2)),
+        (_SMALL_EDGE_WALKER, (10, 2)),
+        (_SMALL_EDGE_WALKER, (9, 6)),
+        (_SMALL_EDGE_WALKER, (10, 5)),
+    ],
+)
+def test_is_on_edge_negative(edge_walker, pos):
+    """negative test of is_on_edge"""
+    assert not edge_walker.is_on_edge(pos)
+
+
+@pytest.mark.parametrize(
+    "edge_walker, pos",
+    [
+        (_SMALL_EDGE_WALKER, (9, 1)),
+        (_SMALL_EDGE_WALKER, (1, 5)),
+        (_SMALL_EDGE_WALKER, (1, 8)),
+        (_SMALL_EDGE_WALKER, (16, 12)),
+    ],
+)
+def test_is_convex_corner_positive(edge_walker, pos):
+    """positive test of is_convex_corner"""
+    assert edge_walker.is_convex_corner(pos)
+
+
+@pytest.mark.parametrize(
+    "edge_walker, pos",
+    [
+        (_SMALL_EDGE_WALKER, (9, 4)),
+        (_SMALL_EDGE_WALKER, (9, 5)),
+        (_SMALL_EDGE_WALKER, (8, 5)),
+    ],
+)
+def test_is_convex_corner_negative(edge_walker, pos):
+    """negative test of is_convex_corner"""
+    assert not edge_walker.is_convex_corner(pos)
+
+
+@pytest.mark.parametrize(
+    "edge_walker, pos",
+    [
+        (_SMALL_EDGE_WALKER, (9, 5)),
+        (_SMALL_EDGE_WALKER, (9, 8)),
+        (_SMALL_EDGE_WALKER, (12, 9)),
+    ],
+)
+def test_is_concave_corner_positive(edge_walker, pos):
+    """positive test of is_concave_corner"""
+    assert edge_walker.is_concave_corner(pos)
+
+
+@pytest.mark.parametrize(
+    "edge_walker, pos",
+    [
+        (_SMALL_EDGE_WALKER, (9, 4)),
+        (_SMALL_EDGE_WALKER, (8, 5)),
+        (_SMALL_EDGE_WALKER, (4, 5)),
+        (_SMALL_EDGE_WALKER, (9, 1)),
+        (_SMALL_EDGE_WALKER, (13, 9)),
+    ],
+)
+def test_is_concave_corner_negative(edge_walker, pos):
+    """negative test of is_concave_corner"""
+    assert not edge_walker.is_concave_corner(pos)
+
+
+@pytest.mark.parametrize(
+    "edge_walker, input_walk_data, expected_walk_data",
+    [
+        (
+            _SMALL_EDGE_WALKER,
+            sol.WalkData((4, 5), (1, 0)),
+            sol.WalkData((5, 5), (1, 0)),
+        ),
+        (
+            _SMALL_EDGE_WALKER,
+            sol.WalkData((9, 1), (0, -1)),
+            sol.WalkData((9, 1), (1, 0)),
+        ),
+        (
+            _SMALL_EDGE_WALKER,
+            sol.WalkData((9, 1), (1, 0)),
+            sol.WalkData((10, 1), (1, 0)),
+        ),
+        (
+            _SMALL_EDGE_WALKER,
+            sol.WalkData((9, 1), (-1, 0)),
+            sol.WalkData((9, 1), (0, 1)),
+        ),
+        (
+            _SMALL_EDGE_WALKER,
+            sol.WalkData((9, 1), (0, 1)),
+            sol.WalkData((9, 2), (0, 1)),
+        ),
+        (
+            _SMALL_EDGE_WALKER,
+            sol.WalkData((8, 8), (1, 0)),
+            sol.WalkData((9, 8), (1, 0)),
+        ),
+        (
+            _SMALL_EDGE_WALKER,
+            sol.WalkData((9, 8), (1, 0)),
+            sol.WalkData((9, 8), (0, 1)),
+        ),
+        (
+            _SMALL_EDGE_WALKER,
+            sol.WalkData((9, 8), (0, 1)),
+            sol.WalkData((9, 9), (0, 1)),
+        ),
+        (
+            _SMALL_EDGE_WALKER,
+            sol.WalkData((9, 9), (0, -1)),
+            sol.WalkData((9, 8), (0, -1)),
+        ),
+        (
+            _SMALL_EDGE_WALKER,
+            sol.WalkData((9, 8), (0, -1)),
+            sol.WalkData((9, 8), (-1, 0)),
+        ),
+        (
+            _SMALL_EDGE_WALKER,
+            sol.WalkData((9, 8), (-1, 0)),
+            sol.WalkData((8, 8), (-1, 0)),
+        ),
+    ],
+)
+def test_next_pos(edge_walker, input_walk_data, expected_walk_data):
+    """tests next_pos"""
+    assert edge_walker.next_pos(input_walk_data) == expected_walk_data
+
+
+@pytest.mark.parametrize(
+    "edge_walker, expected",
+    [
+        (_SMALL_EDGE_WALKER, {(9, 5), (9, 8), (12, 9)}),
+    ],
+)
+def test_find_all_concave_corners(edge_walker, expected):
+    """tests find_all_concave_corners"""
+    assert edge_walker.find_all_concave_corners() == expected
+
+
+@pytest.mark.parametrize(
+    "edge_walker, input_pos, expected",
+    [
+        (_SMALL_EDGE_WALKER, (4, 5), (0, 1)),
+        (_SMALL_EDGE_WALKER, (9, 2), (1, 0)),
+    ],
+)
+def test_get_dir_inside(edge_walker, input_pos, expected):
+    """tests get_dir_inside"""
+    assert edge_walker.get_dir_inside(input_pos) == expected
+
+
+@pytest.mark.parametrize(
+    "input_str,expected",
+    [
+        pytest.param(_data_small(), 5031, id="small"),
+        pytest.param(_data_p(), 52311, id="p"),
+    ],
+)
+def test_solve_b(input_str, expected):
+    """tests solve_b"""
+    assert sol.solve_b(input_str) == expected
