@@ -129,10 +129,10 @@ def test_parse_input():
         ((12, 5), (1, 0), (1, 5), (1, 0)),
     ],
 )
-def test_mover_a_wrap_pos(input_pos, input_dir, expected_pos, expected_dir):
-    """tests wrap_pos in MoverA"""
+def test_mover_flat_wrap_pos(input_pos, input_dir, expected_pos, expected_dir):
+    """tests wrap_pos in MoverFlat"""
     parse_res = sol.parse_input(_data_small())
-    mover = sol.MoverA(parse_res.map, parse_res.start_pos)
+    mover = sol.MoverFlat(parse_res.map, parse_res.start_pos)
     assert mover.wrap_pos(input_pos, input_dir) == (expected_pos, expected_dir)
 
 
@@ -152,7 +152,7 @@ def test_get_pwd(input_pos, input_dir, expected):
 def test_make_move_mover_a():
     """tests make_move in part a"""
     parse_res = sol.parse_input(_data_small())
-    mover = sol.MoverA(parse_res.map, parse_res.start_pos)
+    mover = sol.MoverFlat(parse_res.map, parse_res.start_pos)
     expected = [
         ((11, 1), (1, 0)),
         ((11, 1), (0, 1)),

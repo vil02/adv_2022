@@ -132,7 +132,9 @@ class _Mover:
         return self._cur_dir
 
 
-class MoverA(_Mover):
+class MoverFlat(_Mover):
+    """imlements a _Mover class for a walk on a flat map"""
+
     def __init__(self, map_data, start_pos):
         super().__init__(map_data, start_pos)
         self._wraps = {}
@@ -169,7 +171,7 @@ def _solve(in_str, mover_type):
 
 def solve_a(in_str):
     """returns the solution for part_a"""
-    return _solve(in_str, MoverA)
+    return _solve(in_str, MoverFlat)
 
 
 def _get_all_dirs():
@@ -203,6 +205,7 @@ class EdgeWalker:
         # TODO check is side length  >= 2
 
     def is_in(self, in_pos):
+        """returns True iff in_pos is inside the net"""
         return in_pos in self.net
 
     def _is_shift_in(self, in_pos, in_shift):
@@ -212,18 +215,23 @@ class EdgeWalker:
         return self.is_on_edge(_make_shift(in_pos, in_shift))
 
     def is_on_edge(self, in_pos):
+        """checks if given position is on the edge of the net"""
         assert in_pos in self.net
         return any(not self._is_shift_in(in_pos, _) for _ in _get_all_dirs())
 
     def is_convex_corner(self, in_pos):
+        """checks if in_pos is on a outer/convex corner"""
         assert self.is_on_edge(in_pos)
         return sum(1 for _ in _get_all_dirs() if self._is_shift_in(in_pos, _)) == 3
 
     def is_concave_corner(self, in_pos):
+        """checks if in_pos is on a inner/concave corner"""
         assert self.is_on_edge(in_pos)
         return sum(1 for _ in _get_all_dirs() if self._is_shift_in(in_pos, _)) == 7
 
     def get_edge_dirs(self, in_pos):
+        """returns all directions along the edges at given position"""
+        assert self.is_on_edge(in_pos)
         return [
             _
             for _ in _get_main_dirs()
@@ -231,6 +239,10 @@ class EdgeWalker:
         ]
 
     def get_dir_inside(self, in_pos):
+        """
+        Returns a direction "inside" the cubes net.
+        in_pos cannot be on the corner.
+        """
         assert (
             self.is_on_edge(in_pos)
             and not self.is_convex_corner(in_pos)
@@ -245,6 +257,7 @@ class EdgeWalker:
         return dirs[0]
 
     def next_pos(self, in_walk_data):
+        """returns the data describing the next position in a walk along the edge"""
         assert self.is_on_edge(in_walk_data.pos)
         next_pos = _make_shift(in_walk_data.pos, in_walk_data.dir)
         if self.is_in(next_pos) and self.is_on_edge(next_pos):
@@ -257,70 +270,88 @@ class EdgeWalker:
         edge_dirs.remove(_negate_tuple(in_walk_data.dir))
         return WalkData(in_walk_data.pos, edge_dirs[0])
 
+    def next_positions(self, *in_walks):
+        """applies next_pos to all entries of in_walks"""
+        return tuple(self.next_pos(_) for _ in in_walks)
+
     def find_all_concave_corners(self):
+        """returns all of the concave corners"""
         return {_ for _ in self.net if self.is_on_edge(_) and self.is_concave_corner(_)}
+
+
+def _update_wrap_data(wrap_data, in_pos_a, inside_dir_a, in_pos_b, inside_dir_b):
+    wrap_data[(in_pos_a, _negate_tuple(inside_dir_a))] = (in_pos_b, inside_dir_b)
+    wrap_data[(in_pos_b, _negate_tuple(inside_dir_b))] = (in_pos_a, inside_dir_a)
+
+
+def _update_wrap_data_at_regular_pos(wrap_data, edge_walker, in_pos_a, in_pos_b):
+    _update_wrap_data(
+        wrap_data,
+        in_pos_a,
+        edge_walker.get_dir_inside(in_pos_a),
+        in_pos_b,
+        edge_walker.get_dir_inside(in_pos_b),
+    )
+
+
+def _get_next_to_convex(edge_walker, walk_on_convex):
+    tmp_dir = (
+        walk_on_convex.dir
+        if edge_walker.is_in(_make_shift(walk_on_convex.pos, walk_on_convex.dir))
+        else _negate_tuple(walk_on_convex.dir)
+    )
+
+    return edge_walker.next_pos(WalkData(walk_on_convex.pos, tmp_dir))
+
+
+def _update_wrap_data_at_convex_pos(wrap_data, edge_walker, walk_on_convex, in_pos):
+    assert edge_walker.is_convex_corner(walk_on_convex.pos)
+    next_to_convex = _get_next_to_convex(edge_walker, walk_on_convex)
+    convex_insde_dir = edge_walker.get_dir_inside(next_to_convex.pos)
+    _update_wrap_data(
+        wrap_data,
+        walk_on_convex.pos,
+        convex_insde_dir,
+        in_pos,
+        edge_walker.get_dir_inside(in_pos),
+    )
+
+
+def _update_wrap_data_single_state(wrap_data, edge_walker, start_pos):
+    start_dirs = edge_walker.get_edge_dirs(start_pos)
+    assert len(start_dirs) == 2
+    walk_a, walk_b = edge_walker.next_positions(
+        *tuple(WalkData(start_pos, _) for _ in start_dirs)
+    )
+    while not (
+        edge_walker.is_convex_corner(walk_a.pos)
+        and edge_walker.is_convex_corner(walk_b.pos)
+    ):
+        if not edge_walker.is_convex_corner(
+            walk_a.pos
+        ) and not edge_walker.is_convex_corner(walk_b.pos):
+            _update_wrap_data_at_regular_pos(
+                wrap_data, edge_walker, walk_a.pos, walk_b.pos
+            )
+        elif edge_walker.is_convex_corner(walk_a.pos):
+            _update_wrap_data_at_convex_pos(wrap_data, edge_walker, walk_a, walk_b.pos)
+        else:
+            assert edge_walker.is_convex_corner(walk_b.pos)
+            _update_wrap_data_at_convex_pos(wrap_data, edge_walker, walk_b, walk_a.pos)
+        walk_a, walk_b = edge_walker.next_positions(walk_a, walk_b)
 
 
 def _compute_wrap_data(in_net):
     edge_walker = EdgeWalker(in_net)
     res = {}
-
-    def _update_res(in_pos_a, inside_dir_a, in_pos_b, inside_dir_b):
-        res[(in_pos_a, _negate_tuple(inside_dir_a))] = (in_pos_b, inside_dir_b)
-        res[(in_pos_b, _negate_tuple(inside_dir_b))] = (in_pos_a, inside_dir_a)
-
-    def _update_res_regular(in_pos_a, in_pos_b):
-        _update_res(
-            in_pos_a,
-            edge_walker.get_dir_inside(in_pos_a),
-            in_pos_b,
-            edge_walker.get_dir_inside(in_pos_b),
-        )
-
-    def _get_next_to_convex(walk_on_convex):
-        tmp_dir = (
-            walk_on_convex.dir
-            if edge_walker.is_in(_make_shift(walk_on_convex.pos, walk_on_convex.dir))
-            else _negate_tuple(walk_on_convex.dir)
-        )
-
-        return edge_walker.next_pos(WalkData(walk_on_convex.pos, tmp_dir))
-
-    def _update_res_convex(walk_on_convex, in_pos):
-        assert edge_walker.is_convex_corner(walk_on_convex.pos)
-        next_to_convex = _get_next_to_convex(walk_on_convex)
-        convex_insde_dir = edge_walker.get_dir_inside(next_to_convex.pos)
-        _update_res(
-            walk_on_convex.pos,
-            convex_insde_dir,
-            in_pos,
-            edge_walker.get_dir_inside(in_pos),
-        )
-
     for start_pos in edge_walker.find_all_concave_corners():
-        start_dirs = edge_walker.get_edge_dirs(start_pos)
-        assert len(start_dirs) == 2
-        walk_a = edge_walker.next_pos(WalkData(start_pos, start_dirs[0]))
-        walk_b = edge_walker.next_pos(WalkData(start_pos, start_dirs[1]))
-        while not (
-            edge_walker.is_convex_corner(walk_a.pos)
-            and edge_walker.is_convex_corner(walk_b.pos)
-        ):
-            if not edge_walker.is_convex_corner(
-                walk_a.pos
-            ) and not edge_walker.is_convex_corner(walk_b.pos):
-                _update_res_regular(walk_a.pos, walk_b.pos)
-            elif edge_walker.is_convex_corner(walk_a.pos):
-                _update_res_convex(walk_a, walk_b.pos)
-            else:
-                assert edge_walker.is_convex_corner(walk_b.pos)
-                _update_res_convex(walk_b, walk_a.pos)
-            walk_a = edge_walker.next_pos(walk_a)
-            walk_b = edge_walker.next_pos(walk_b)
+        _update_wrap_data_single_state(res, edge_walker, start_pos)
     return res
 
 
-class MoverB(_Mover):
+class MoverCube(_Mover):
+    """impelements a _Mover class in case of a walk on a net of a cube"""
+
     def __init__(self, map_data, start_pos):
         super().__init__(map_data, start_pos)
         self._wrap_data = _compute_wrap_data(self._map)
@@ -339,4 +370,4 @@ class MoverB(_Mover):
 
 def solve_b(in_str):
     """returns the solution for part_b"""
-    return _solve(in_str, MoverB)
+    return _solve(in_str, MoverCube)
