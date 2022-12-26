@@ -120,6 +120,13 @@ def test_parse_input():
     }
 
 
+def test_mover_wrap_pos_is_abstract():
+    """tests if wrap_pos in Mover is not implemented"""
+    mover = sol.Mover({(0, 1): "."}, (0, 1))
+    with pytest.raises(NotImplementedError):
+        mover.wrap_pos((0, 1), (0, 1))
+
+
 @pytest.mark.parametrize(
     "input_pos, input_dir, expected_pos, expected_dir",
     [
