@@ -83,6 +83,8 @@ def _negate_tuple(in_tuple):
 
 
 class Mover:
+    """abstract class providing functionalities related to moving on maps"""
+
     def __init__(self, map_data, start_pos):
         assert start_pos in map_data
         self._map = map_data
@@ -135,7 +137,7 @@ class Mover:
 
 
 class MoverFlat(Mover):
-    """imlements a _Mover class for a walk on a flat map"""
+    """imlements a Mover class for a walk on a flat map"""
 
     def __init__(self, map_data, start_pos):
         super().__init__(map_data, start_pos)
@@ -372,7 +374,7 @@ def _compute_wrap_data(in_net):
 
 
 class MoverCube(Mover):
-    """impelements a _Mover class in case of a walk on a net of a cube"""
+    """impelements a Mover class in case of a walk on a net of a cube"""
 
     def __init__(self, map_data, start_pos):
         super().__init__(map_data, start_pos)
