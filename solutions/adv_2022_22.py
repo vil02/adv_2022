@@ -89,6 +89,7 @@ class _Mover:
         self._cur_dir = (1, 0)
 
     def wrap_pos(self, in_pos, in_dir):
+        """returns the position/direction after the move outside"""
         raise NotImplementedError()
 
     def _change_dir(self, in_turn):
@@ -205,9 +206,10 @@ def _calculate_maxs(in_map):
     return x_max, y_max
 
 
-def compute_side_length(in_map):
-    side_length = math.gcd(*_calculate_maxs(in_map))
-    assert len(in_map) == 6 * side_length**2
+def compute_side_length(in_net):
+    """returns the length of the cube with net represented by in_net"""
+    side_length = math.gcd(*_calculate_maxs(in_net))
+    assert len(in_net) == 6 * side_length**2
     return side_length
 
 
@@ -215,6 +217,8 @@ WalkData = collections.namedtuple("WalkData", ["pos", "dir"])
 
 
 class EdgeWalker:
+    """implements functionalities related to moving along the edges of a net of a cube"""
+
     def __init__(self, in_net):
         assert compute_side_length(in_net) >= 2
         self.net = in_net
@@ -370,12 +374,6 @@ class MoverCube(_Mover):
     def __init__(self, map_data, start_pos):
         super().__init__(map_data, start_pos)
         self._wrap_data = _compute_wrap_data(self._map)
-
-    def _to_net_pos(self, in_pos):
-        return _reduce_pos(in_pos, self._side_length)
-
-    def _to_map_shift(self, in_shift):
-        return _multiply_tuple(self._side_length, in_shift)
 
     def wrap_pos(self, in_pos, in_dir):
         """wraps the position as in part b"""
