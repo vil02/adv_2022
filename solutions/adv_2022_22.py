@@ -136,7 +136,7 @@ class Mover:
         return self._cur_dir
 
 
-class MoverFlat(Mover):
+class FlatMover(Mover):
     """imlements a Mover class for a walk on a flat map"""
 
     def __init__(self, map_data, start_pos):
@@ -175,7 +175,7 @@ def _solve(in_str, mover_type):
 
 def solve_a(in_str):
     """returns the solution for part_a"""
-    return _solve(in_str, MoverFlat)
+    return _solve(in_str, FlatMover)
 
 
 def _get_all_dirs():
@@ -393,7 +393,7 @@ def _compute_wrap_data(in_net):
     return res
 
 
-class MoverCube(Mover):
+class CubeMover(Mover):
     """impelements a Mover class in case of a walk on a net of a cube"""
 
     def __init__(self, map_data, start_pos):
@@ -408,4 +408,4 @@ class MoverCube(Mover):
 
 def solve_b(in_str):
     """returns the solution for part_b"""
-    return _solve(in_str, MoverCube)
+    return _solve(in_str, CubeMover)
