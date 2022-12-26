@@ -217,7 +217,9 @@ WalkData = collections.namedtuple("WalkData", ["pos", "dir"])
 
 
 class EdgeWalker:
-    """implements functionalities related to moving along the edges of a net of a cube"""
+    """
+    implements functionalities related to moving along the edges of a net of a cube
+    """
 
     def __init__(self, in_net):
         assert compute_side_length(in_net) >= 2
