@@ -328,16 +328,31 @@ def _get_next_to_convex(edge_walker, walk_on_convex):
     return edge_walker.next_pos(WalkData(walk_on_convex.pos, tmp_dir))
 
 
-def _update_wrap_data_at_convex_pos(wrap_data, edge_walker, walk_on_convex, in_pos):
+def _get_inside_dir_at_convex(edge_walker, walk_on_convex):
     assert edge_walker.is_convex_corner(walk_on_convex.pos)
     next_to_convex = _get_next_to_convex(edge_walker, walk_on_convex)
-    convex_insde_dir = edge_walker.get_dir_inside(next_to_convex.pos)
+    return edge_walker.get_dir_inside(next_to_convex.pos)
+
+
+def _update_wrap_data_at_single_convex_pos(
+    wrap_data, edge_walker, walk_on_convex, in_pos
+):
     _update_wrap_data(
         wrap_data,
         walk_on_convex.pos,
-        convex_insde_dir,
+        _get_inside_dir_at_convex(edge_walker, walk_on_convex),
         in_pos,
         edge_walker.get_dir_inside(in_pos),
+    )
+
+
+def _update_wrap_data_at_convex_pos(wrap_data, edge_walker, walk_a, walk_b):
+    _update_wrap_data(
+        wrap_data,
+        walk_a.pos,
+        _get_inside_dir_at_convex(edge_walker, walk_a),
+        walk_b.pos,
+        _get_inside_dir_at_convex(edge_walker, walk_b),
     )
 
 
@@ -358,11 +373,16 @@ def _update_wrap_data_single_state(wrap_data, edge_walker, start_pos):
                 wrap_data, edge_walker, walk_a.pos, walk_b.pos
             )
         elif edge_walker.is_convex_corner(walk_a.pos):
-            _update_wrap_data_at_convex_pos(wrap_data, edge_walker, walk_a, walk_b.pos)
+            _update_wrap_data_at_single_convex_pos(
+                wrap_data, edge_walker, walk_a, walk_b.pos
+            )
         else:
             assert edge_walker.is_convex_corner(walk_b.pos)
-            _update_wrap_data_at_convex_pos(wrap_data, edge_walker, walk_b, walk_a.pos)
+            _update_wrap_data_at_single_convex_pos(
+                wrap_data, edge_walker, walk_b, walk_a.pos
+            )
         walk_a, walk_b = edge_walker.next_positions(walk_a, walk_b)
+    _update_wrap_data_at_convex_pos(wrap_data, edge_walker, walk_a, walk_b)
 
 
 def _compute_wrap_data(in_net):

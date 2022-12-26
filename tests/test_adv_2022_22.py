@@ -15,6 +15,10 @@ def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
 
+def _data_e():
+    return gu.read_input(_DAY_NUM, "e")
+
+
 def test_parse_input():
     """tests parse input with example data"""
     parse_res = sol.parse_input(_data_small())
@@ -185,6 +189,7 @@ def test_make_move_mover_a():
     [
         pytest.param(_data_small(), 6032, id="small"),
         pytest.param(_data_p(), 181128, id="p"),
+        pytest.param(_data_e(), 11464, id="e"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -197,6 +202,7 @@ def test_solve_a(input_str, expected):
     [
         pytest.param(_data_small(), 4, id="small"),
         pytest.param(_data_p(), 50, id="p"),
+        pytest.param(_data_e(), 50, id="e"),
     ],
 )
 def test_compute_side_length(input_str, expected):
@@ -388,6 +394,7 @@ def test_get_dir_inside(edge_walker, input_pos, expected):
     [
         pytest.param(_data_small(), 5031, id="small"),
         pytest.param(_data_p(), 52311, id="p"),
+        pytest.param(_data_e(), 197122, id="e"),
     ],
 )
 def test_solve_b(input_str, expected):
