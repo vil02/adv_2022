@@ -185,6 +185,18 @@ def test_solve_a(input_str, expected):
     assert sol.solve_a(input_str) == expected
 
 
+@pytest.mark.parametrize(
+    "input_str,expected",
+    [
+        pytest.param(_data_small(), 4, id="small"),
+        pytest.param(_data_p(), 50, id="p"),
+    ],
+)
+def test_compute_side_length(input_str, expected):
+    """tests compute_side_length"""
+    assert sol.compute_side_length(sol.parse_input(input_str).map) == expected
+
+
 _SMALL_EDGE_WALKER = sol.EdgeWalker(sol.parse_input(_data_small()).map)
 
 

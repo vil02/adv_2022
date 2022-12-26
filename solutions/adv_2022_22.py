@@ -196,13 +196,28 @@ def _get_main_dirs():
     )
 
 
+def _calculate_maxs(in_map):
+    x_max = 0
+    y_max = 0
+    for x_pos, y_pos in in_map:
+        x_max = max(x_max, x_pos)
+        y_max = max(y_max, y_pos)
+    return x_max, y_max
+
+
+def compute_side_length(in_map):
+    side_length = math.gcd(*_calculate_maxs(in_map))
+    assert len(in_map) == 6 * side_length**2
+    return side_length
+
+
 WalkData = collections.namedtuple("WalkData", ["pos", "dir"])
 
 
 class EdgeWalker:
     def __init__(self, in_net):
+        assert compute_side_length(in_net) >= 2
         self.net = in_net
-        # TODO check is side length  >= 2
 
     def is_in(self, in_pos):
         """returns True iff in_pos is inside the net"""
