@@ -61,7 +61,7 @@ def compute_is_visible(height_data):
     for start_x in range(len(height_data[-1])):
         _proc_ray((start_x, len(height_data[-1]) - 1), (0, -1))
 
-    for (start_y, row) in enumerate(height_data):
+    for start_y, row in enumerate(height_data):
         _proc_ray((0, start_y), (1, 0))
         _proc_ray((len(row) - 1, start_y), (-1, 0))
 
@@ -90,9 +90,9 @@ def _scenic_score_rows(height_data, scores):
         scores[y_pos][write_x_pos] *= x_pos - stack[-1].position if stack else x_pos
         stack.append(StackRow(height, x_pos))
 
-    for (y_pos, row) in enumerate(height_data):
+    for y_pos, row in enumerate(height_data):
         stack = []
-        for (x_pos, height) in enumerate(row):
+        for x_pos, height in enumerate(row):
             _proc(x_pos, y_pos, height, stack, True)
         stack = []
         for x_pos in range(len(row)):

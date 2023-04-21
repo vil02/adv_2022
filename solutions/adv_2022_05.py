@@ -22,7 +22,7 @@ def parse_input(in_str):
     def _proc_initial_state_str(in_initial_state_str):
         res = {}
         for cur_line in in_initial_state_str.splitlines()[:-1]:
-            for (cur_col, cur_char) in enumerate(cur_line):
+            for cur_col, cur_char in enumerate(cur_line):
                 if cur_char in string.ascii_uppercase:
                     cur_stack_num = get_stack_number(cur_col)
                     res[cur_stack_num] = [cur_char] + res.get(cur_stack_num, [])
