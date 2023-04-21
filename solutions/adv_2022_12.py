@@ -13,7 +13,7 @@ def parse_input(in_str):
         nonlocal start_pos
         nonlocal end_pos
         res = []
-        for (char_num, cur_char) in enumerate(list(in_line)):
+        for char_num, cur_char in enumerate(list(in_line)):
             if cur_char == "S":
                 assert start_pos is None
                 start_pos = (char_num, line_num)

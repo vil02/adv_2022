@@ -18,7 +18,7 @@ def split_lists(in_str):
     cur_counter = 0
     res = []
     last_pos = 0
-    for (num, cur_char) in enumerate(in_str):
+    for num, cur_char in enumerate(in_str):
         if cur_char == "[":
             cur_counter += 1
         elif cur_char == "]":
