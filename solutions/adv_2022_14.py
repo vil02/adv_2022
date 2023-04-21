@@ -41,7 +41,7 @@ def add_segment(walls, start_pos, end_pos):
 
 def add_line(walls, in_line):
     """adds a line of wall to walls"""
-    for (cur_pos, cur_start) in enumerate(in_line[:-1]):
+    for cur_pos, cur_start in enumerate(in_line[:-1]):
         add_segment(walls, cur_start, in_line[cur_pos + 1])
 
 
