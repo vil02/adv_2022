@@ -29,7 +29,7 @@ def read_to_string(in_file_path):
 
 
 def test_input_data_folder():
-    """retursn the path of the with test input data"""
+    """returns the path of the with test input data"""
     res = project_folder() / "tests" / "test_input_data"
     assert res.is_dir()
     return res
