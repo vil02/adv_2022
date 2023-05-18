@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-find . -name "*.py" -not -path "./tests/example_data/python3/*" -exec ./check_python_file.sh {} +
+find . -name "*.py" -exec ./check_python_file.sh {} +
