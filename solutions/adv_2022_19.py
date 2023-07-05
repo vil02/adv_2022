@@ -48,3 +48,9 @@ def parse_blueprint(in_str):
 def parse_input(in_str):
     """parses the input into a tuple of Blueprints"""
     return tuple(parse_blueprint(_) for _ in in_str.splitlines())
+
+
+def compute_quality_level(in_id, in_maximal_number_of_genodes):
+    """computes quality level for given ID and number of genodes"""
+    assert in_id > 0
+    return in_id * in_maximal_number_of_genodes
