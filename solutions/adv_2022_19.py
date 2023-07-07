@@ -206,3 +206,12 @@ def solve_a(in_str):
         _.id: evaluate_blueprint(blueprint_to_raw_format(_), 24) for _ in blueprints
     }
     return sum(compute_quality_level(id, max_val) for id, max_val in results.items())
+
+
+def solve_b(in_str):
+    """returns the solution for part_b"""
+    blueprints = parse_input(in_str)[:3]
+    max_genodes = [
+        evaluate_blueprint(blueprint_to_raw_format(_), 32) for _ in blueprints
+    ]
+    return functools.reduce(lambda a, b: a * b, max_genodes)

@@ -88,9 +88,11 @@ def test_get_bounds(input_raw_blueprint, expected):
         (_RAW_BLUEPRINT_SMALL_1, 19, 1),
         (_RAW_BLUEPRINT_SMALL_1, 20, 2),
         (_RAW_BLUEPRINT_SMALL_1, 24, 9),
+        (_RAW_BLUEPRINT_SMALL_1, 32, 56),
         (_RAW_BLUEPRINT_SMALL_2, 19, 1),
         (_RAW_BLUEPRINT_SMALL_2, 20, 2),
         (_RAW_BLUEPRINT_SMALL_2, 24, 12),
+        (_RAW_BLUEPRINT_SMALL_2, 32, 62),
     ],
 )
 def test_evaluate_blueprint(input_raw_blueprint, input_time_limit, expected):
@@ -108,3 +110,14 @@ def test_evaluate_blueprint(input_raw_blueprint, input_time_limit, expected):
 def test_solve_a(input_str, expected):
     """tests solve_a"""
     assert sol.solve_a(input_str) == expected
+
+
+@pytest.mark.parametrize(
+    "input_str,expected",
+    [
+        pytest.param(_data_p(), -1, id="p"),
+    ],
+)
+def test_solve_b(input_str, expected):
+    """tests solve_b"""
+    assert sol.solve_b(input_str) == expected
