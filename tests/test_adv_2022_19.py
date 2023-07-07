@@ -115,7 +115,7 @@ def test_solve_a(input_str, expected):
 @pytest.mark.parametrize(
     "input_str,expected",
     [
-        pytest.param(_data_p(), -1, id="p"),
+        pytest.param(_data_p(), 6840, id="p"),
     ],
 )
 def test_solve_b(input_str, expected):
