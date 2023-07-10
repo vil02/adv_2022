@@ -79,10 +79,6 @@ def blueprint_to_raw_format(in_blueprint):
     )
 
 
-def _can_build(in_resources, in_costs):
-    return all(r >= c for r, c in zip(in_resources, in_costs))
-
-
 def _remove_rerources(in_resources, in_costs):
     return tuple(r - c for r, c in zip(in_resources, in_costs))
 
@@ -131,7 +127,7 @@ def _get_initial_state(in_time_limit):
 
 
 def _to_key(in_resources, in_robots, in_time_left):
-    return tuple([in_resources, in_robots, in_time_left])
+    return _to_state(in_resources, in_robots, in_time_left)
 
 
 def _is_too_many_robots(in_robots, in_bounds):
@@ -150,6 +146,58 @@ def _reduce_resources(in_resources, in_time_left, in_bounds):
     for res_num, bound in enumerate(in_bounds):
         res[res_num] = min(res[res_num], in_time_left * bound)
     return tuple(res)
+
+
+def compute_needed_resources(in_resources, in_robot_cost):
+    """
+    returns the amout of resourcess still needed to be collected to produce
+    given robot
+    """
+    return tuple(max(0, c - r) for r, c in zip(in_resources, in_robot_cost))
+
+
+def compute_waiting_time_for_single(in_production_rate, in_needed_amout):
+    """computes the time needed to produce given amout of resource"""
+    assert in_production_rate >= 0 and in_needed_amout >= 0
+    if in_production_rate == 0:
+        return math.inf if in_needed_amout > 0 else 0
+    return math.ceil(in_needed_amout / in_production_rate)
+
+
+def compute_waiting_time(in_production_rates, in_needed_resources):
+    """computes the amount of minutes needed to produce the needed resources"""
+    return max(
+        compute_waiting_time_for_single(rate, need)
+        for rate, need in zip(in_production_rates, in_needed_resources)
+    )
+
+
+def _get_waiting_time(in_resources, in_robots, in_robot_cost):
+    return compute_waiting_time(
+        in_robots, compute_needed_resources(in_resources, in_robot_cost)
+    )
+
+
+def _wait_and_build_robot(in_resources, in_robots, in_robot_pos, in_costs, time_left):
+    waiting_time = _get_waiting_time(in_resources, in_robots, in_costs)
+    if waiting_time >= time_left:
+        return None
+
+    cur_resources = in_resources
+    for _ in range(waiting_time):
+        cur_resources = _add_resources(cur_resources, in_robots)
+    cur_time_left = time_left - waiting_time
+
+    cur_resources, cur_robots = _build_robot_and_add_resources(
+        cur_resources, in_robots, in_robot_pos, in_costs
+    )
+    return cur_resources, cur_robots, cur_time_left - 1
+
+
+def _check_state(in_new_state, in_bounds):
+    return in_new_state is not None and not _is_too_many_robots(
+        in_new_state[1], in_bounds
+    )
 
 
 @functools.lru_cache(maxsize=None)
@@ -173,28 +221,17 @@ def evaluate_blueprint(in_raw_blueprint, time_limit):
             )
             continue
 
-        if _is_too_many_robots(cur_robots, bounds):
-            continue
-
         cur_resources = _reduce_resources(cur_resources, cur_time_left, bounds)
 
         if _to_key(cur_resources, cur_robots, cur_time_left) in known_states:
             continue
 
-        new_states = []
-        new_states.append(
-            tuple([_add_resources(cur_resources, cur_robots), cur_robots])
-        )
         for robot_pos, robot_cost in enumerate(in_raw_blueprint):
-            if _can_build(cur_resources, robot_cost):
-                new_states.append(
-                    _build_robot_and_add_resources(
-                        cur_resources, cur_robots, robot_pos, robot_cost
-                    )
-                )
-
-        for _ in new_states:
-            active.append(_to_state(*_, cur_time_left - 1))
+            new_state = _wait_and_build_robot(
+                cur_resources, cur_robots, robot_pos, robot_cost, cur_time_left
+            )
+            if _check_state(new_state, bounds):
+                active.append(new_state)
         known_states.add(_to_key(cur_resources, cur_robots, cur_time_left))
     return max_val
 
