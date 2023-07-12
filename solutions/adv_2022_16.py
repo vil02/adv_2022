@@ -68,9 +68,10 @@ def compute_all_distances(in_valves):
     return {_: compute_distances(in_valves, _) for _ in in_valves.keys()}
 
 
-def compute_max(in_valves, in_time_limit):
+def get_compute_max(in_valves):
     """
-    computes the maximal preasure, which can be released in in_time_limit
+    returns the function computing the maximal preasure,
+    which can be released in in_time_limit
     """
     dists = compute_all_distances(in_valves)
 
@@ -94,11 +95,38 @@ def compute_max(in_valves, in_time_limit):
                         new_time_left,
                     ),
                 )
+
         return cur_max
 
-    return _inner(_INITIAL_VALVE, frozenset(), in_time_limit)
+    return _inner
 
 
 def solve_a(in_str):
     """returns the solution for part_a"""
-    return compute_max(parse_input(in_str), 30)
+    return get_compute_max(parse_input(in_str))(_INITIAL_VALVE, frozenset(), 30)
+
+
+def _powerset(elements):
+    number_of_elements = len(elements)
+    masks = [1 << _ for _ in range(number_of_elements)]
+    for _ in range(1 << number_of_elements):
+        yield frozenset(ss for mask, ss in zip(masks, elements) if _ & mask)
+
+
+def solve_b(in_str):
+    """returns the solution for part_b"""
+    valves = parse_input(in_str)
+    set_of_valves = frozenset(
+        valve for valve, data in valves.items() if data.flow_rate > 0
+    )
+    compute_max_fun = get_compute_max(valves)
+    res = 0
+    for _ in _powerset(set_of_valves):
+        set_a = frozenset(_)
+        set_b = set_of_valves.difference(set_a)
+        res = max(
+            res,
+            compute_max_fun(_INITIAL_VALVE, set_a, 26)
+            + compute_max_fun(_INITIAL_VALVE, set_b, 26),
+        )
+    return res
