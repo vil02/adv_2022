@@ -1,5 +1,6 @@
 """tests of adv_2022_16"""
 
+import pytest
 import general_utils as gu
 import solutions.adv_2022_16 as sol
 
@@ -31,3 +32,41 @@ def test_parse_input():
     }
 
     assert actual == expected
+
+
+@pytest.mark.parametrize(
+    "input_valves, start_valve, expected",
+    [
+        (
+            sol.parse_input(_data_small()),
+            "AA",
+            {
+                "AA": 0,
+                "BB": 1,
+                "CC": 2,
+                "DD": 1,
+                "EE": 2,
+                "FF": 3,
+                "GG": 4,
+                "HH": 5,
+                "II": 1,
+                "JJ": 2,
+            },
+        ),
+    ],
+)
+def test_compute_distances(input_valves, start_valve, expected):
+    """tests compute_distances"""
+    assert sol.compute_distances(input_valves, start_valve) == expected
+
+
+@pytest.mark.parametrize(
+    "input_str,expected",
+    [
+        pytest.param(_data_small(), 1651, id="small"),
+        pytest.param(_data_p(), 1862, id="p"),
+    ],
+)
+def test_solve_a(input_str, expected):
+    """tests solve_a"""
+    assert sol.solve_a(input_str) == expected
