@@ -70,3 +70,15 @@ def test_compute_distances(input_valves, start_valve, expected):
 def test_solve_a(input_str, expected):
     """tests solve_a"""
     assert sol.solve_a(input_str) == expected
+
+
+@pytest.mark.parametrize(
+    "input_str,expected",
+    [
+        pytest.param(_data_small(), 1707, id="small"),
+        pytest.param(_data_p(), 2422, id="p"),
+    ],
+)
+def test_solve_b(input_str, expected):
+    """tests solve_b"""
+    assert sol.solve_b(input_str) == expected
