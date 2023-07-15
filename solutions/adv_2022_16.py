@@ -68,6 +68,36 @@ def compute_all_distances(in_valves):
     return {_: compute_distances(in_valves, _) for _ in in_valves.keys()}
 
 
+def is_nth_bit_set(in_mask, in_bit_num):
+    """returns the in_bit_num bit in in_mask"""
+    return bool(in_mask & (1 << in_bit_num))
+
+
+def _get_set_and_mask_related(in_valves):
+    valve_to_num = {valve: valve_num for valve_num, valve in enumerate(in_valves)}
+    num_to_valve = {valve_num: valve for valve, valve_num in valve_to_num.items()}
+    number_of_valves = len(in_valves)
+
+    def _set_to_mask(in_set):
+        return sum(2 ** valve_to_num[_] for _ in in_set)
+
+    def _mask_to_set(in_mask):
+        return {
+            num_to_valve[_]
+            for _ in range(number_of_valves)
+            if is_nth_bit_set(in_mask, _)
+        }
+
+    return _set_to_mask, _mask_to_set
+
+
+def get_openable_valves(in_valves):
+    """returns the valves, with flow_rate > 0"""
+    return {
+        valve for valve, properties in in_valves.items() if properties.flow_rate > 0
+    }
+
+
 def get_compute_max(in_valves):
     """
     returns the function computing the maximal preasure,
@@ -75,9 +105,12 @@ def get_compute_max(in_valves):
     """
     dists = compute_all_distances(in_valves)
 
+    set_to_mask, mask_to_set = _get_set_and_mask_related(get_openable_valves(in_valves))
+
     @functools.lru_cache(maxsize=None)
-    def _inner(cur_valve, cur_opened, cur_time_left):
+    def _inner(cur_valve, cur_opened_mask, cur_time_left):
         assert cur_time_left >= 0
+        cur_opened = mask_to_set(cur_opened_mask)
         cur_max = 0
         for new_valve, distance in dists[cur_valve].items():
             new_time_left = cur_time_left - (distance + 1)
@@ -91,42 +124,43 @@ def get_compute_max(in_valves):
                     in_valves[new_valve].flow_rate * new_time_left
                     + _inner(
                         new_valve,
-                        cur_opened.union({new_valve}),
+                        set_to_mask(cur_opened.union({new_valve})),
                         new_time_left,
                     ),
                 )
 
         return cur_max
 
-    return _inner
+    return _inner, set_to_mask
 
 
 def solve_a(in_str):
     """returns the solution for part_a"""
-    return get_compute_max(parse_input(in_str))(_INITIAL_VALVE, frozenset(), 30)
+    compute_max, set_to_mask = get_compute_max(parse_input(in_str))
+    return compute_max(_INITIAL_VALVE, set_to_mask(set()), 30)
 
 
-def _powerset(elements):
-    number_of_elements = len(elements)
-    masks = [1 << _ for _ in range(number_of_elements)]
-    for _ in range(1 << number_of_elements):
-        yield frozenset(ss for mask, ss in zip(masks, elements) if _ & mask)
+def _invert_mask(in_mask, in_number_of_valves):
+    return sum(
+        2**_ for _ in range(in_number_of_valves) if not is_nth_bit_set(in_mask, _)
+    )
+
+
+def _gen_all_mask_pairs(in_number_of_valves):
+    for _ in range(1 << (in_number_of_valves - 1)):
+        yield _, _invert_mask(_, in_number_of_valves)
 
 
 def solve_b(in_str):
     """returns the solution for part_b"""
     valves = parse_input(in_str)
-    set_of_valves = frozenset(
-        valve for valve, data in valves.items() if data.flow_rate > 0
-    )
-    compute_max_fun = get_compute_max(valves)
+
+    compute_max_fun, _ = get_compute_max(valves)
     res = 0
-    for _ in _powerset(set_of_valves):
-        set_a = frozenset(_)
-        set_b = set_of_valves.difference(set_a)
+    for mask_a, mask_b in _gen_all_mask_pairs(len(get_openable_valves(valves))):
         res = max(
             res,
-            compute_max_fun(_INITIAL_VALVE, set_a, 26)
-            + compute_max_fun(_INITIAL_VALVE, set_b, 26),
+            compute_max_fun(_INITIAL_VALVE, mask_a, 26)
+            + compute_max_fun(_INITIAL_VALVE, mask_b, 26),
         )
     return res

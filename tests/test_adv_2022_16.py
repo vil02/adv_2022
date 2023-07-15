@@ -61,6 +61,63 @@ def test_compute_distances(input_valves, start_valve, expected):
 
 
 @pytest.mark.parametrize(
+    "input_mask, input_bit_num, expected",
+    [
+        (0, 0, False),
+        (0, 1, False),
+        (0, 2, False),
+        (0, 3, False),
+        (0, 4, False),
+        (1, 0, True),
+        (1, 1, False),
+        (1, 1, False),
+        (2, 0, False),
+        (2, 1, True),
+        (2, 2, False),
+        (13, 0, True),
+        (13, 1, False),
+        (13, 2, True),
+        (13, 3, True),
+        (13, 4, False),
+    ],
+)
+def test_is_nth_bit_set(input_mask, input_bit_num, expected):
+    """tests is_nth_bit_set"""
+    assert sol.is_nth_bit_set(input_mask, input_bit_num) == expected
+
+
+@pytest.mark.parametrize(
+    "in_valves, expected",
+    [
+        (sol.parse_input(_data_small()), {"BB", "CC", "DD", "EE", "HH", "JJ"}),
+        (
+            sol.parse_input(_data_p()),
+            {
+                "AE",
+                "GJ",
+                "KF",
+                "XM",
+                "IJ",
+                "QB",
+                "SE",
+                "UK",
+                "CS",
+                "NA",
+                "CO",
+                "DS",
+                "MN",
+                "EU",
+                "QN",
+            },
+        ),
+    ],
+)
+def test_get_openable_valves(in_valves, expected):
+    """ "tests get_openable_valves"""
+    assert sol.get_openable_valves(in_valves) == expected
+
+
+@pytest.mark.parametrize(
     "input_str,expected",
     [
         pytest.param(_data_small(), 1651, id="small"),
