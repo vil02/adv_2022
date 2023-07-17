@@ -15,6 +15,10 @@ def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
 
+def _data_s():
+    return gu.read_input(_DAY_NUM, "s")
+
+
 def test_parse_input():
     """tests parse_input agains example data"""
     actual = sol.parse_input(_data_small())
@@ -65,6 +69,7 @@ def test_compute_is_visible():
     [
         pytest.param(_data_small(), 21, id="small"),
         pytest.param(_data_p(), 1829, id="p"),
+        pytest.param(_data_s(), 1814, id="s"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -90,6 +95,7 @@ def test_compute_all_scenic_scores():
     [
         pytest.param(_data_small(), 8, id="small"),
         pytest.param(_data_p(), 291840, id="p"),
+        pytest.param(_data_s(), 330786, id="s"),
     ],
 )
 def test_solve_b(input_str, expected):
