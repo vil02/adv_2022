@@ -19,6 +19,10 @@ def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
 
+def _data_s():
+    return gu.read_input(_DAY_NUM, "s")
+
+
 def test_parse_input():
     """tests parse input with example data"""
     actual = sol.parse_input(_data_small())
@@ -131,6 +135,7 @@ def test_rope_simulator(input_str, rope_length, expected):
     [
         pytest.param(_data_small(), 13, id="small"),
         pytest.param(_data_p(), 6090, id="p"),
+        pytest.param(_data_s(), 6011, id="s"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -144,6 +149,7 @@ def test_solve_a(input_str, expected):
         pytest.param(_data_small(), 1, id="small"),
         pytest.param(_data_bigger(), 36, id="bigger"),
         pytest.param(_data_p(), 2566, id="p"),
+        pytest.param(_data_s(), 2419, id="s"),
     ],
 )
 def test_solve_b(input_str, expected):
