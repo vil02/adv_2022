@@ -11,6 +11,10 @@ def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
 
+def _data_g():
+    return gu.read_input(_DAY_NUM, "g")
+
+
 def _get_id(in_part, in_num):
     return f"example_{in_part}_{in_num}"
 
@@ -55,7 +59,8 @@ def test_find_first_block_end_raises_exception_when_block_not_found(
         pytest.param("nppdvjthqldpwncqszvftbrmjlhg", 6, id=_get_id("a", 2)),
         pytest.param("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 10, id=_get_id("a", 3)),
         pytest.param("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 11, id=_get_id("a", 4)),
-        pytest.param(_data_p(), 1816),
+        pytest.param(_data_p(), 1816, id="p"),
+        pytest.param(_data_g(), 1140, id="g"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -72,6 +77,7 @@ def test_solve_a(input_str, expected):
         pytest.param("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29, id=_get_id("b", 3)),
         pytest.param("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26, id=_get_id("b", 4)),
         pytest.param(_data_p(), 2625, id="p"),
+        pytest.param(_data_g(), 3495, id="g"),
     ],
 )
 def test_solve_b(input_str, expected):
