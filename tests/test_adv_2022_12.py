@@ -15,6 +15,10 @@ def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
 
+def _data_s():
+    return gu.read_input(_DAY_NUM, "s")
+
+
 def test_parse_input():
     """tests parse_input with example data"""
     actual = sol.parse_input(_data_small())
@@ -64,6 +68,7 @@ def test_gen_candidates_a(input_pos, expected):
     [
         pytest.param(_data_small(), 31, id="small"),
         pytest.param(_data_p(), 383, id="p"),
+        pytest.param(_data_s(), 484, id="s"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -76,6 +81,7 @@ def test_solve_a(input_str, expected):
     [
         pytest.param(_data_small(), 29, id="small"),
         pytest.param(_data_p(), 377, id="p"),
+        pytest.param(_data_s(), 478, id="s"),
     ],
 )
 def test_solve_b(input_str, expected):
