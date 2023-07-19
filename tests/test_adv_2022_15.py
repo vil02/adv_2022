@@ -16,6 +16,10 @@ def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
 
+def _data_s():
+    return gu.read_input(_DAY_NUM, "s")
+
+
 def test_parse_input():
     """tests parse_input with example data"""
     actual = sol.parse_input(_data_small())
@@ -72,9 +76,16 @@ def test_count_safe_in_row():
     assert sol.count_safe_in_row(sol.parse_input(_data_small()), 10) == 26
 
 
-def test_solve_a():
+@pytest.mark.parametrize(
+    "input_str,expected",
+    [
+        pytest.param(_data_p(), 4827924, id="p"),
+        pytest.param(_data_s(), 4861076, id="s"),
+    ],
+)
+def test_solve_a(input_str, expected):
     """tests solve_a"""
-    assert sol.solve_a(_data_p()) == 4827924
+    assert sol.solve_a(input_str) == expected
 
 
 def test_find_distress_beacon_fine():
@@ -116,6 +127,13 @@ def test_tuning_frequency(input_x, input_y, expected):
     assert sol.tuning_frequency(input_x, input_y) == expected
 
 
-def test_solve_b():
+@pytest.mark.parametrize(
+    "input_str,expected",
+    [
+        pytest.param(_data_p(), 12977110973564, id="p"),
+        pytest.param(_data_s(), 10649103160102, id="s"),
+    ],
+)
+def test_solve_b(input_str, expected):
     """tests solve_b"""
-    assert sol.solve_b(_data_p()) == 12977110973564
+    assert sol.solve_b(input_str) == expected
