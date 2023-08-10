@@ -27,6 +27,10 @@ def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
 
+def _data_s():
+    return gu.read_input(_DAY_NUM, "s")
+
+
 def test_parse_input():
     """tests parse_input with example data"""
     expected = (
@@ -55,6 +59,7 @@ def test_parse_input():
         pytest.param(_data_my_2(), 2 * 9 + 4 * 3 * 4 + 10, id="my_2"),
         pytest.param(_data_my_3(), 2 * 9 + 4 * 3 * 5 + 2 * 6, id="my_3"),
         pytest.param(_data_p(), 4348, id="p"),
+        pytest.param(_data_s(), 3364, id="s"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -70,6 +75,7 @@ def test_solve_a(input_str, expected):
         pytest.param(_data_my_3(), 2 * 9 + 4 * 3 * 5, id="my_3"),
         pytest.param(_data_small(), 58, id="small"),
         pytest.param(_data_p(), 2546, id="p"),
+        pytest.param(_data_s(), 2006, id="s"),
     ],
 )
 def test_solve_b(input_str, expected):
