@@ -19,6 +19,10 @@ def _data_p():
     return gu.read_input(_DAY_NUM, "p")
 
 
+def _data_s():
+    return gu.read_input(_DAY_NUM, "s")
+
+
 def test_parse_blocks():
     """tests parse_blocks"""
     expected = (
@@ -93,6 +97,7 @@ def test_drop_single_returns_none_when_generator_exhausted():
     [
         pytest.param(_data_small(), 3068, id="small"),
         pytest.param(_data_p(), 3181, id="p"),
+        pytest.param(_data_s(), 3168, id="s"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -105,6 +110,7 @@ def test_solve_a(input_str, expected):
     [
         pytest.param(_data_small(), 1514285714288, id="small"),
         pytest.param(_data_p(), 1570434782634, id="p"),
+        pytest.param(_data_s(), 1554117647070, id="s"),
     ],
 )
 def test_solve_b(input_str, expected):
