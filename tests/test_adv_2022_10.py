@@ -23,6 +23,10 @@ def _data_s():
     return gu.read_input(_DAY_NUM, "s")
 
 
+def _data_b():
+    return gu.read_input(_DAY_NUM, "b")
+
+
 def test_run():
     """tests run method of the Computer with small example data"""
     cmds = sol.parse_input(_data_small())
@@ -53,6 +57,7 @@ def test_signal_strength(input_cycle, input_x, expected):
         pytest.param(_data_bigger(), 13140, id="bigger"),
         pytest.param(_data_p(), 17020, id="p"),
         pytest.param(_data_s(), 10760, id="s"),
+        pytest.param(_data_b(), 12980, id="b"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -87,6 +92,15 @@ _EXPECTED_S = [
     """#....#.....###.#....#..#.#.....###.#..#.""",
 ]
 
+_EXPECTED_B = [
+    "###..###....##.#....####.#..#.#....###..",
+    "#..#.#..#....#.#....#....#..#.#....#..#.",
+    "###..#..#....#.#....###..#..#.#....#..#.",
+    "#..#.###.....#.#....#....#..#.#....###..",
+    "#..#.#.#..#..#.#....#....#..#.#....#....",
+    "###..#..#..##..####.#.....##..####.#....",
+]
+
 
 @pytest.mark.parametrize(
     "input_str,expected",
@@ -94,6 +108,7 @@ _EXPECTED_S = [
         pytest.param(_data_bigger(), _EXPECTED_BIGGER, id="bigger"),
         pytest.param(_data_p(), _EXPECTED_P, id="p"),
         pytest.param(_data_s(), _EXPECTED_S, id="s"),
+        pytest.param(_data_b(), _EXPECTED_B, id="b"),
     ],
 )
 def test_solve_b(input_str, expected):
