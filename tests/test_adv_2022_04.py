@@ -19,6 +19,10 @@ def _data_s():
     return gu.read_input(_DAY_NUM, "s")
 
 
+def _data_b():
+    return gu.read_input(_DAY_NUM, "b")
+
+
 def _add_reversed(in_list):
     res = in_list + [tuple(reversed(_)) for _ in in_list]
     return list(set(res))
@@ -60,6 +64,7 @@ def test_is_one_fully_contained_negative(in_a, in_b):
         pytest.param(_data_small(), 2, id="small"),
         pytest.param(_data_p(), 433, id="p"),
         pytest.param(_data_s(), 582, id="s"),
+        pytest.param(_data_b(), 462, id="b"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -103,6 +108,7 @@ def test_do_intersect_negative(in_a, in_b):
         pytest.param(_data_small(), 4, id="small"),
         pytest.param(_data_p(), 852, id="p"),
         pytest.param(_data_s(), 893, id="s"),
+        pytest.param(_data_b(), 835, id="b"),
     ],
 )
 def test_solve_b(input_str, expected):
