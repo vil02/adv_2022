@@ -19,6 +19,10 @@ def _data_s():
     return gu.read_input(_DAY_NUM, "s")
 
 
+def _data_b():
+    return gu.read_input(_DAY_NUM, "b")
+
+
 @pytest.mark.parametrize(
     "input_str,expected",
     [
@@ -132,6 +136,7 @@ def test_is_in_order_negative(in_left, in_right):
         pytest.param(_data_small(), 13, id="small"),
         pytest.param(_data_p(), 5717, id="p"),
         pytest.param(_data_s(), 5905, id="s"),
+        pytest.param(_data_b(), 5557, id="b"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -145,6 +150,7 @@ def test_solve_a(input_str, expected):
         pytest.param(_data_small(), 140, id="small"),
         pytest.param(_data_p(), 25935, id="p"),
         pytest.param(_data_s(), 21691, id="s"),
+        pytest.param(_data_b(), 22425, id="b"),
     ],
 )
 def test_solve_b(input_str, expected):
