@@ -19,6 +19,10 @@ def _data_s():
     return gu.read_input(_DAY_NUM, "s")
 
 
+def _data_b():
+    return gu.read_input(_DAY_NUM, "b")
+
+
 def _get_dummy_manipulator_b(in_operation):
     return sol.ItemManipulatorB(in_operation, 23)
 
@@ -86,6 +90,7 @@ def test_make_rounds():
         pytest.param(_data_small(), 10605, id="small"),
         pytest.param(_data_p(), 78960, id="p"),
         pytest.param(_data_s(), 67830, id="s"),
+        pytest.param(_data_b(), 110264, id="b"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -99,6 +104,7 @@ def test_solve_a(input_str, expected):
         pytest.param(_data_small(), 2713310158, id="small"),
         pytest.param(_data_p(), 14561971968, id="p"),
         pytest.param(_data_s(), 15305381442, id="s"),
+        pytest.param(_data_b(), 23612457316, id="b"),
     ],
 )
 def test_solve_b(input_str, expected):
