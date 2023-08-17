@@ -28,6 +28,10 @@ def _data_b():
     return gu.read_input(_DAY_NUM, "b")
 
 
+def _data_t():
+    return gu.read_input(_DAY_NUM, "t")
+
+
 _EXAMPLE_DATA = sol.parse_input(_data_small())
 
 Sizes = collections.namedtuple("Sizes", ["simple_size", "total_size"])
@@ -67,6 +71,7 @@ def test_get_dir_size(dir_path, expected):
         pytest.param(_data_p(), 1453349, id="p"),
         pytest.param(_data_s(), 1501149, id="s"),
         pytest.param(_data_b(), 1908462, id="b"),
+        pytest.param(_data_t(), 1350966, id="t"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -82,6 +87,7 @@ def test_solve_a(input_str, expected):
         pytest.param(_data_p(), 2948823, id="p"),
         pytest.param(_data_s(), 10096985, id="s"),
         pytest.param(_data_b(), 3979145, id="b"),
+        pytest.param(_data_t(), 6296435, id="t"),
     ],
 )
 def test_solve_b(input_str, expected):
