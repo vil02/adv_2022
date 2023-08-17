@@ -19,6 +19,10 @@ def _data_b():
     return gu.read_input(_DAY_NUM, "b")
 
 
+def _data_t():
+    return gu.read_input(_DAY_NUM, "t")
+
+
 def _data_small():
     return gu.read_input(_DAY_NUM, "small")
 
@@ -60,6 +64,7 @@ def test_get_priority_raises_error(input_char):
         pytest.param(_data_p(), 8298, id="p"),
         pytest.param(_data_s(), 8109, id="s"),
         pytest.param(_data_b(), 7691, id="b"),
+        pytest.param(_data_t(), 7763, id="t"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -74,6 +79,7 @@ def test_solve_a(input_str, expected):
         pytest.param(_data_p(), 2708, id="p"),
         pytest.param(_data_s(), 2738, id="s"),
         pytest.param(_data_b(), 2508, id="b"),
+        pytest.param(_data_t(), 2569, id="t"),
     ],
 )
 def test_solve_b(input_str, expected):
