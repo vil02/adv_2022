@@ -23,6 +23,10 @@ def _data_b():
     return gu.read_input(_DAY_NUM, "b")
 
 
+def _data_t():
+    return gu.read_input(_DAY_NUM, "t")
+
+
 def test_parse_input():
     """tests parse_input agains example data"""
     expected = [[1000, 2000, 3000], [4000], [5000, 6000], [7000, 8000, 9000], [10000]]
@@ -37,6 +41,7 @@ def test_parse_input():
         (_data_p(), 69912),
         (_data_f(), 66487),
         (_data_b(), 68923),
+        (_data_t(), 68802),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -51,6 +56,7 @@ def test_solve_a(input_str, expected):
         (_data_p(), 208180),
         (_data_f(), 197301),
         (_data_b(), 200044),
+        (_data_t(), 205370),
     ],
 )
 def test_solve_b(input_str, expected):
