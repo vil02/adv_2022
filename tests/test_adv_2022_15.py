@@ -20,6 +20,10 @@ def _data_s():
     return gu.read_input(_DAY_NUM, "s")
 
 
+def _data_b():
+    return gu.read_input(_DAY_NUM, "b")
+
+
 def test_parse_input():
     """tests parse_input with example data"""
     actual = sol.parse_input(_data_small())
@@ -81,6 +85,7 @@ def test_count_safe_in_row():
     [
         pytest.param(_data_p(), 4827924, id="p"),
         pytest.param(_data_s(), 4861076, id="s"),
+        pytest.param(_data_b(), 5878678, id="b"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -132,6 +137,7 @@ def test_tuning_frequency(input_x, input_y, expected):
     [
         pytest.param(_data_p(), 12977110973564, id="p"),
         pytest.param(_data_s(), 10649103160102, id="s"),
+        pytest.param(_data_b(), 11796491041245, id="b"),
     ],
 )
 def test_solve_b(input_str, expected):
