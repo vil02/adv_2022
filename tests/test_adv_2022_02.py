@@ -23,6 +23,10 @@ def _data_b():
     return gu.read_input(_DAY_NUM, "b")
 
 
+def _data_t():
+    return gu.read_input(_DAY_NUM, "t")
+
+
 @pytest.mark.parametrize(
     "input_str,expected",
     [
@@ -30,6 +34,7 @@ def _data_b():
         (_data_p(), 10941),
         (_data_s(), 11666),
         (_data_b(), 12276),
+        (_data_t(), 14375),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -44,6 +49,7 @@ def test_solve_a(input_str, expected):
         (_data_p(), 13071),
         (_data_s(), 12767),
         (_data_b(), 9975),
+        (_data_t(), 10274),
     ],
 )
 def test_solve_b(input_str, expected):
