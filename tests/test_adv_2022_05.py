@@ -23,6 +23,10 @@ def _data_b():
     return gu.read_input(_DAY_NUM, "b")
 
 
+def _data_t():
+    return gu.read_input(_DAY_NUM, "t")
+
+
 @pytest.mark.parametrize(
     "input_col,expected",
     [
@@ -81,6 +85,7 @@ def test_make_move(input_str, move_fun, expected_state):
         pytest.param(_data_p(), "LJSVLTWQM", id="p"),
         pytest.param(_data_s(), "TQRFCBSJJ", id="s"),
         pytest.param(_data_b(), "SHMSDGZVC", id="b"),
+        pytest.param(_data_t(), "RNZLFZSJH", id="t"),
     ],
 )
 def test_solve_a(input_str, expected):
@@ -95,6 +100,7 @@ def test_solve_a(input_str, expected):
         pytest.param(_data_p(), "BRQWDBBJM", id="p"),
         pytest.param(_data_s(), "RMHFJNVFP", id="s"),
         pytest.param(_data_b(), "VRZGHDFBQ", id="b"),
+        pytest.param(_data_t(), "CNSFCGJSM", id="t"),
     ],
 )
 def test_solve_b(input_str, expected):
