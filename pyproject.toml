@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "solutions"}]
 
 [tool.poetry.dependencies]
-python = ">=3.7"
+python = ">=3.8"
 numpy = "*"
 sympy = "*"
 shapely = "2.0.2"
@@ -21,7 +21,7 @@ pytest-xdist = "*"
 pylint = "*"
 flake8 = "*"
 coverage = "*"
-black = "*"
+black = ">=24.1"
 
 [build-system]
 requires = ["poetry-core"]
