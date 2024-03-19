@@ -24,7 +24,7 @@ def _data_b():
 
 
 def test_parse_input():
-    """tests parse_input agains example data"""
+    """tests parse_input against example data"""
     actual = sol.parse_input(_data_small())
     expected = (
         (3, 0, 3, 7, 3),
@@ -56,7 +56,7 @@ def test_get_height(in_pos, expected):
 
 
 def test_compute_is_visible():
-    """tests compute_is_visible agains example height data"""
+    """tests compute_is_visible against example height data"""
     actual = sol.compute_is_visible(sol.parse_input(_data_small()))
     expected = [
         [True, True, True, True, True],

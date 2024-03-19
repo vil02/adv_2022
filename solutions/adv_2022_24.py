@@ -72,7 +72,7 @@ def _get_end_pos(in_size):
 
 
 def position_candidates(in_size, in_pos):
-    """returns all positions accesible from given one"""
+    """returns all positions accessible from given one"""
     if in_pos == _get_start_pos():
         return [(0, 0), in_pos]
 
@@ -95,7 +95,7 @@ def _to_key(in_pos, in_time):
 
 
 def find_minimal_time(in_size, blizzard_positions, start_pos, target_pos, start_time):
-    """returns the minimal time neded to move from start_pos to target_pos"""
+    """returns the minimal time needed to move from start_pos to target_pos"""
     known = set()
     active = [_to_key(start_pos, 0)]
     best_time = math.inf

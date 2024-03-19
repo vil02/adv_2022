@@ -40,7 +40,7 @@ def _is_in_range(height_data, in_pos):
 
 def get_height(height_data, in_pos):
     """
-    Returns the height at given positon.
+    Returns the height at given position.
     If position is outside the range, it returns -1.
     """
     assert _is_in_range(height_data, in_pos)

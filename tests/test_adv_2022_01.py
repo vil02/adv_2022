@@ -28,7 +28,7 @@ def _data_t():
 
 
 def test_parse_input():
-    """tests parse_input agains example data"""
+    """tests parse_input against example data"""
     expected = [[1000, 2000, 3000], [4000], [5000, 6000], [7000, 8000, 9000], [10000]]
     actual = sol.parse_input(_data_small())
     assert expected == actual

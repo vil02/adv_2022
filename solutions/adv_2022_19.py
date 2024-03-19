@@ -109,7 +109,7 @@ def _get_genode(in_resources):
 
 def get_bounds(in_raw_blueprint):
     """
-    returns a tuple with maximal costs for each resourse
+    returns a tuple with maximal costs for each resource
     """
     res = [
         max(cur_robot_cost[_] for cur_robot_cost in in_raw_blueprint)
@@ -150,14 +150,14 @@ def _reduce_resources(in_resources, in_time_left, in_bounds):
 
 def compute_needed_resources(in_resources, in_robot_cost):
     """
-    returns the amout of resourcess still needed to be collected to produce
+    returns the amount of resourcess still needed to be collected to produce
     given robot
     """
     return tuple(max(0, c - r) for r, c in zip(in_resources, in_robot_cost))
 
 
 def compute_waiting_time_for_single(in_production_rate, in_needed_amout):
-    """computes the time needed to produce given amout of resource"""
+    """computes the time needed to produce given amount of resource"""
     assert in_production_rate >= 0 and in_needed_amout >= 0
     if in_production_rate == 0:
         return math.inf if in_needed_amout > 0 else 0
@@ -203,7 +203,7 @@ def _check_state(in_new_state, in_bounds):
 @functools.lru_cache(maxsize=None)
 def evaluate_blueprint(in_raw_blueprint, time_limit):
     """
-    returns the maximal amout geodes which can be produced using given
+    returns the maximal amount geodes which can be produced using given
     blueprint in given time
     """
     bounds = get_bounds(in_raw_blueprint)

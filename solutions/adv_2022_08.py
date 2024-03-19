@@ -19,7 +19,7 @@ def _is_in_range(height_data, in_pos):
 
 def get_height(height_data, in_pos):
     """
-    Returns the height at given positon.
+    Returns the height at given position.
     If position is outside the range, it returns -1.
     """
     if not _is_in_range(height_data, in_pos):
@@ -38,7 +38,7 @@ def _shift_pos_back(in_pos, in_shift):
 
 def compute_is_visible(height_data):
     """
-    returns a list of boolen lists descibing if given tree is visible from outside
+    returns a list of boolean lists describing if given tree is visible from outside
     """
     res = [[False for _ in cur_row] for cur_row in height_data]
 

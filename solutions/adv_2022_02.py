@@ -23,7 +23,7 @@ def _me_to_name(in_me):
 
 
 def evaluate_single(in_data):
-    """returns the score of single game as desribed in part A"""
+    """returns the score of single game as described in part A"""
     raw_op, raw_me = in_data
     op_name = _op_to_name(raw_op)
     me_name = _me_to_name(raw_me)
