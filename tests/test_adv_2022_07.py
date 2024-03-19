@@ -50,7 +50,7 @@ _EXPECTED_SIZES = {
     [(dir_path, size.simple_size) for (dir_path, size) in _EXPECTED_SIZES.items()],
 )
 def test_all_file_size(dir_path, expected):
-    """tests Dictionary.all_file_size agains example data"""
+    """tests Dictionary.all_file_size against example data"""
     assert _EXAMPLE_DATA[dir_path].all_file_size() == expected
 
 
@@ -59,7 +59,7 @@ def test_all_file_size(dir_path, expected):
     [(dir_path, size.total_size) for (dir_path, size) in _EXPECTED_SIZES.items()],
 )
 def test_get_dir_size(dir_path, expected):
-    """tests get_dir_size agains example data"""
+    """tests get_dir_size against example data"""
     assert sol.get_dir_size(dir_path, _EXAMPLE_DATA) == expected
 
 

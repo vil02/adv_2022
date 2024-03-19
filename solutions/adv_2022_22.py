@@ -137,7 +137,7 @@ class Mover:
 
 
 class FlatMover(Mover):
-    """imlements a Mover class for a walk on a flat map"""
+    """implements a Mover class for a walk on a flat map"""
 
     def __init__(self, map_data, start_pos):
         super().__init__(map_data, start_pos)
@@ -162,7 +162,7 @@ def _facing(in_dir):
 
 
 def get_pwd(in_pos, in_dir):
-    """returns the password of given positon/direction"""
+    """returns the password of given position/direction"""
     return 1000 * in_pos[1] + 4 * in_pos[0] + _facing(in_dir)
 
 
@@ -394,7 +394,7 @@ def _compute_wrap_data(in_net):
 
 
 class CubeMover(Mover):
-    """impelements a Mover class in case of a walk on a net of a cube"""
+    """implements a Mover class in case of a walk on a net of a cube"""
 
     def __init__(self, map_data, start_pos):
         super().__init__(map_data, start_pos)

@@ -23,7 +23,7 @@ def _increase_value(histogram, in_key):
 
 class Block:
     """
-    represents a blok of text and allows to update in average constant time
+    represents a block of text and allows to update in average constant time
     and check if the stored characters are all different in average constant time
     """
 
@@ -47,7 +47,7 @@ class Block:
             self._add_char(new_char)
 
     def check(self):
-        """returns true iff block consits of distinct characters"""
+        """returns true iff block consists of distinct characters"""
         return len(self._histogram) == self._block_size
 
 

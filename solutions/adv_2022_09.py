@@ -43,10 +43,10 @@ class RopeSimulator:
 
     def __init__(self, rope_length=2):
         assert rope_length >= 2
-        orgin = (0, 0)
+        origin = (0, 0)
         self._length = rope_length
-        self._knots = [orgin for _ in range(rope_length)]
-        self._visited_by_tail = {orgin}
+        self._knots = [origin for _ in range(rope_length)]
+        self._visited_by_tail = {origin}
 
     def make_move(self, move):
         """makes a single move"""

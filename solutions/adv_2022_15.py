@@ -7,7 +7,7 @@ import shapely
 
 
 class SensorReading:
-    """represents sensor readig"""
+    """represents sensor reading"""
 
     def __init__(self, in_sensor, in_beacon):
         self._sensor = in_sensor

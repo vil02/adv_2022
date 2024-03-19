@@ -32,7 +32,7 @@ class Computer:
         self._saved_cycles.append(self._x_value)
 
     def run_single(self, in_cmd):
-        """runns the single command"""
+        """runs the single command"""
         if in_cmd == "noop":
             self._increase_cycle()
         else:
@@ -42,7 +42,7 @@ class Computer:
             self._x_value += in_cmd.value
 
     def run(self, in_cmds):
-        """runns all of the commands from in_cmds"""
+        """runs all of the commands from in_cmds"""
         for _ in in_cmds:
             self.run_single(_)
         self._saved_cycles.append(self._x_value)

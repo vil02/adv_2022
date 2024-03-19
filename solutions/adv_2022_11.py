@@ -199,7 +199,7 @@ def make_round(monkeys):
 
 
 def make_rounds(monkeys, number_of_rounds):
-    """makes a specifed number of rounds"""
+    """makes a specified number of rounds"""
     for _ in range(number_of_rounds):
         make_round(monkeys)
 
