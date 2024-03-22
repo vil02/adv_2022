@@ -5,7 +5,6 @@ image:
 tasks:
   - init: |
       poetry install --with dev
-      poetry run pytest
 
 github:
   prebuilds:
