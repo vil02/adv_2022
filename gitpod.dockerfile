@@ -1,3 +1,3 @@
-FROM gitpod/workspace-python:2024-09-22-20-53-01
+FROM gitpod/workspace-python:2024-10-02-10-19-08
 
 USER gitpod
