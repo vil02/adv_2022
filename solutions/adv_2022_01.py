@@ -1,5 +1,7 @@
 """solution of adv_2022_01"""
 
+import heapq
+
 
 def parse_input(in_str):
     """returns a list of lists of integers"""
@@ -23,7 +25,4 @@ def solve_a(in_str):
 
 def solve_b(in_str):
     """returns the solution for part_b"""
-    data = parse_input(in_str)
-    sorted_sums = sorted(_count_sums(data))
-    assert len(sorted_sums) >= 3
-    return sum(sorted_sums[-3:])
+    return sum(heapq.nlargest(3, _count_sums(parse_input(in_str))))
