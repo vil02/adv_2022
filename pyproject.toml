@@ -2,26 +2,26 @@
 name = "adv-2022"
 version = "1.0.0"
 description = "solutions of Advent of Code 2022"
-authors = ["piotr.idzik <vil02@o2.pl>"]
+authors = ["piotr.idzik <vil02_adv@10g.pl>"]
 readme = "README.md"
 packages = [{include = "solutions"}]
 
 [tool.poetry.dependencies]
-python = ">=3.8"
-numpy = "*"
-sympy = "*"
+python = ">=3.10,<4.0.0"
+numpy = "2.1.3"
+sympy = "1.13.3 "
 shapely = "2.0.6"
 
 [tool.poetry.group.dev]
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-pytest = "*"
-pytest-xdist = "*"
-pylint = "*"
-flake8 = "*"
-coverage = "*"
-black = ">=24.1"
+pytest = "8.3.3"
+pytest-xdist = "3.6.1"
+pylint = "3.3.1"
+flake8 = "7.1.1"
+coverage = "7.6.8"
+black = "24.10.0"
 
 [build-system]
 requires = ["poetry-core"]
