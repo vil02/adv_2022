@@ -20,7 +20,7 @@ pytest = "8.3.5"
 pytest-xdist = "3.6.1"
 pylint = "3.3.5"
 flake8 = "7.1.2"
-coverage = "7.6.12"
+coverage = "7.7.0"
 black = "25.1.0"
 
 [build-system]
