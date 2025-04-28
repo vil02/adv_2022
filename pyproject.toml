@@ -9,7 +9,7 @@ packages = [{include = "solutions"}]
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0.0"
 numpy = "2.2.5"
-sympy = "1.13.3 "
+sympy = "1.14.0"
 shapely = "2.1.0"
 
 [tool.poetry.group.dev]
