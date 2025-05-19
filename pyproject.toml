@@ -10,7 +10,7 @@ packages = [{include = "solutions"}]
 python = ">=3.10,<4.0.0"
 numpy = "2.2.6"
 sympy = "1.14.0"
-shapely = "2.1.0"
+shapely = "2.1.1"
 
 [tool.poetry.group.dev]
 optional = true
