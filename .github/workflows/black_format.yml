@@ -8,6 +8,9 @@ name: black_format
       - master
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   black_format:
     runs-on: ubuntu-latest
