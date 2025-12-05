@@ -1,31 +1,25 @@
 """tests of adv_2022_22"""
 
 import pytest
-import general_utils as gu
 import solutions.adv_2022_22 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 22
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
+_INPUTS = tu.get_inputs(22, {"small", "p", "e", "w"})
 
 
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
+_DATA_E = _INPUTS.inputs["e"]
+assert _DATA_E is not None
 
-def _data_e():
-    return gu.read_input(_DAY_NUM, "e")
-
-
-def _data_w():
-    return gu.read_input(_DAY_NUM, "w")
+_DATA_W = _INPUTS.inputs["w"]
+assert _DATA_W is not None
 
 
 def test_parse_input():
     """tests parse input with example data"""
-    parse_res = sol.parse_input(_data_small())
+    parse_res = sol.parse_input(_DATA_SMALL)
     assert parse_res.moves == [10, "R", 5, "L", 5, "R", 10, "L", 4, "R", 5, "L", 5]
     assert parse_res.start_pos == (9, 1)
     assert parse_res.map == {
@@ -146,7 +140,7 @@ def test_mover_wrap_pos_is_abstract():
 )
 def test_flat_mover_wrap_pos(input_pos, input_dir, expected_pos, expected_dir):
     """tests wrap_pos in FlatMover"""
-    parse_res = sol.parse_input(_data_small())
+    parse_res = sol.parse_input(_DATA_SMALL)
     mover = sol.FlatMover(parse_res.map, parse_res.start_pos)
     assert mover.wrap_pos(input_pos, input_dir) == (expected_pos, expected_dir)
 
@@ -166,7 +160,7 @@ def test_get_pwd(input_pos, input_dir, expected):
 
 def test_make_move_flat_mover():
     """tests make_move in part a"""
-    parse_res = sol.parse_input(_data_small())
+    parse_res = sol.parse_input(_DATA_SMALL)
     mover = sol.FlatMover(parse_res.map, parse_res.start_pos)
     expected = [
         ((11, 1), (1, 0)),
@@ -191,24 +185,9 @@ def test_make_move_flat_mover():
 @pytest.mark.parametrize(
     "input_str,expected",
     [
-        pytest.param(_data_small(), 6032, id="small"),
-        pytest.param(_data_p(), 181128, id="p"),
-        pytest.param(_data_e(), 11464, id="e"),
-        pytest.param(_data_w(), 186128, id="w"),
-    ],
-)
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 4, id="small"),
-        pytest.param(_data_p(), 50, id="p"),
-        pytest.param(_data_e(), 50, id="e"),
-        pytest.param(_data_w(), 50, id="w"),
+        pytest.param(_DATA_SMALL, 4, id="small"),
+        pytest.param(_DATA_E, 50, id="e"),
+        pytest.param(_DATA_W, 50, id="w"),
     ],
 )
 def test_compute_side_length(input_str, expected):
@@ -216,7 +195,7 @@ def test_compute_side_length(input_str, expected):
     assert sol.compute_side_length(sol.parse_input(input_str).map) == expected
 
 
-_SMALL_EDGE_WALKER = sol.EdgeWalker(sol.parse_input(_data_small()).map)
+_SMALL_EDGE_WALKER = sol.EdgeWalker(sol.parse_input(_DATA_SMALL).map)
 
 
 @pytest.mark.parametrize(
@@ -395,15 +374,12 @@ def test_get_dir_inside(edge_walker, input_pos, expected):
     assert edge_walker.get_dir_inside(input_pos) == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 5031, id="small"),
-        pytest.param(_data_p(), 52311, id="p"),
-        pytest.param(_data_e(), 197122, id="e"),
-        pytest.param(_data_w(), 34426, id="w"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (6032, 5031),
+        "p": (181128, 52311),
+        "e": (11464, 197122),
+        "w": (186128, 34426),
+    },
 )
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

@@ -1,31 +1,18 @@
 """tests of adv_2022_12"""
 
 import pytest
-import general_utils as gu
 import solutions.adv_2022_12 as sol
-
-_DAY_NUM = 12
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
+from . import test_utils as tu
 
 
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-def _data_s():
-    return gu.read_input(_DAY_NUM, "s")
-
-
-def _data_b():
-    return gu.read_input(_DAY_NUM, "b")
+_INPUTS = tu.get_inputs(12, {"small", "p", "s", "b"})
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
 def test_parse_input():
     """tests parse_input with example data"""
-    actual = sol.parse_input(_data_small())
+    actual = sol.parse_input(_DATA_SMALL)
     assert actual.start_pos == (0, 0)
     assert actual.end_pos == (5, 2)
     assert actual.height_data == _EXAMPLE_HEIGHT_DATA
@@ -67,29 +54,12 @@ def test_gen_candidates_a(input_pos, expected):
     assert set(sol.gen_candidates_a(_EXAMPLE_HEIGHT_DATA, input_pos)) == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 31, id="small"),
-        pytest.param(_data_p(), 383, id="p"),
-        pytest.param(_data_s(), 484, id="s"),
-        pytest.param(_data_b(), 534, id="b"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (31, 29),
+        "p": (383, 377),
+        "s": (484, 478),
+        "b": (534, 525),
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 29, id="small"),
-        pytest.param(_data_p(), 377, id="p"),
-        pytest.param(_data_s(), 478, id="s"),
-        pytest.param(_data_b(), 525, id="b"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

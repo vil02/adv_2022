@@ -1,22 +1,14 @@
 """tests of adv_2022_17"""
 
-import pytest
-import general_utils as gu
 import solutions.adv_2022_17 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 17
+_INPUTS = tu.get_inputs(17, {"small", "blocks", "p"})
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
-
-def _data_blocks():
-    return gu.read_input(_DAY_NUM, "blocks")
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
+_DATA_BLOCKS = _INPUTS.inputs["blocks"]
+assert _DATA_BLOCKS is not None
 
 
 def test_parse_blocks():
@@ -28,7 +20,7 @@ def test_parse_blocks():
         frozenset({(0, 0), (0, 1), (0, 2), (0, 3)}),
         frozenset({(0, 0), (1, 0), (0, 1), (1, 1)}),
     )
-    assert sol.parse_blocks(_data_blocks()) == expected
+    assert sol.parse_blocks(_DATA_BLOCKS) == expected
 
 
 def test_parse_input():
@@ -75,7 +67,7 @@ def test_parse_input():
         ">",
         ">",
     )
-    assert sol.parse_input(_data_small()) == expected
+    assert sol.parse_input(_DATA_SMALL) == expected
 
 
 def test_drop_single_returns_none_when_generator_exhausted():
@@ -88,25 +80,10 @@ def test_drop_single_returns_none_when_generator_exhausted():
     assert sol.drop_single(set(), {(0, 0), (0, 1)}, _move_generator()) is None
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 3068, id="small"),
-        pytest.param(_data_p(), 3181, id="p"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (3068, 1514285714288),
+        "p": (3181, 1570434782634),
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 1514285714288, id="small"),
-        pytest.param(_data_p(), 1570434782634, id="p"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

@@ -1,31 +1,18 @@
 """tests of adv_2022_08"""
 
 import pytest
-import general_utils as gu
 import solutions.adv_2022_08 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 8
+_INPUTS = tu.get_inputs(8, {"small", "p", "s", "b", "t"})
 
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-def _data_s():
-    return gu.read_input(_DAY_NUM, "s")
-
-
-def _data_b():
-    return gu.read_input(_DAY_NUM, "b")
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
 def test_parse_input():
     """tests parse_input against example data"""
-    actual = sol.parse_input(_data_small())
+    actual = sol.parse_input(_DATA_SMALL)
     expected = (
         (3, 0, 3, 7, 3),
         (2, 5, 5, 1, 2),
@@ -52,12 +39,12 @@ def test_parse_input():
 )
 def test_get_height(in_pos, expected):
     """tests get_height with example height data"""
-    assert sol.get_height(sol.parse_input(_data_small()), in_pos) == expected
+    assert sol.get_height(sol.parse_input(_DATA_SMALL), in_pos) == expected
 
 
 def test_compute_is_visible():
     """tests compute_is_visible against example height data"""
-    actual = sol.compute_is_visible(sol.parse_input(_data_small()))
+    actual = sol.compute_is_visible(sol.parse_input(_DATA_SMALL))
     expected = [
         [True, True, True, True, True],
         [True, True, True, False, True],
@@ -68,23 +55,9 @@ def test_compute_is_visible():
     assert actual == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 21, id="small"),
-        pytest.param(_data_p(), 1829, id="p"),
-        pytest.param(_data_s(), 1814, id="s"),
-        pytest.param(_data_b(), 1854, id="b"),
-    ],
-)
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
 def test_compute_all_scenic_scores():
     """tests compute_all_scenic_scores with example height data"""
-    actual = sol.compute_all_scenic_scores(sol.parse_input(_data_small()))
+    actual = sol.compute_all_scenic_scores(sol.parse_input(_DATA_SMALL))
     expected = [
         [0, 0, 0, 0, 0],
         [0, 1, 4, 1, 0],
@@ -95,15 +68,12 @@ def test_compute_all_scenic_scores():
     assert actual == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 8, id="small"),
-        pytest.param(_data_p(), 291840, id="p"),
-        pytest.param(_data_s(), 330786, id="s"),
-        pytest.param(_data_b(), 527340, id="b"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (21, 8),
+        "p": (1829, 291840),
+        "s": (1814, 330786),
+        "b": (1854, 527340),
+    },
 )
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

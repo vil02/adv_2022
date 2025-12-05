@@ -1,39 +1,10 @@
 """tests of adv_2022_00"""
 
-import pytest
-import general_utils as gu
 import solutions.adv_2022_00 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 0
+_INPUTS = tu.get_inputs(0, {"small", "p"})
 
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 10, id="small"),
-        pytest.param(_data_p(), 11, id="p"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b), {"small": (10, 20), "p": (11, 22)}
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 20, id="small"),
-        pytest.param(_data_p(), 22, id="p"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

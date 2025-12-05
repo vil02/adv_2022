@@ -1,30 +1,8 @@
 """tests of adv_2022_04"""
 
 import pytest
-import general_utils as gu
 import solutions.adv_2022_04 as sol
-
-_DAY_NUM = 4
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-def _data_s():
-    return gu.read_input(_DAY_NUM, "s")
-
-
-def _data_b():
-    return gu.read_input(_DAY_NUM, "b")
-
-
-def _data_t():
-    return gu.read_input(_DAY_NUM, "t")
+from . import test_utils as tu
 
 
 def _add_reversed(in_list):
@@ -63,21 +41,6 @@ def test_is_one_fully_contained_negative(in_a, in_b):
 
 
 @pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 2, id="small"),
-        pytest.param(_data_p(), 433, id="p"),
-        pytest.param(_data_s(), 582, id="s"),
-        pytest.param(_data_b(), 462, id="b"),
-        pytest.param(_data_t(), 524, id="t"),
-    ],
-)
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
     "in_a,in_b",
     _add_reversed(
         [
@@ -107,16 +70,15 @@ def test_do_intersect_negative(in_a, in_b):
     assert not sol.do_intersect(in_a, in_b)
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 4, id="small"),
-        pytest.param(_data_p(), 852, id="p"),
-        pytest.param(_data_s(), 893, id="s"),
-        pytest.param(_data_b(), 835, id="b"),
-        pytest.param(_data_t(), 798, id="t"),
-    ],
+_INPUTS = tu.get_inputs(4, {"small", "p", "s", "b", "t"})
+
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (2, 4),
+        "p": (433, 852),
+        "s": (582, 893),
+        "b": (462, 835),
+        "t": (524, 798),
+    },
 )
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

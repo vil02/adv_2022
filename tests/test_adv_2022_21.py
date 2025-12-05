@@ -1,18 +1,13 @@
 """tests of adv_2022_00"""
 
-import pytest
-import general_utils as gu
 import solutions.adv_2022_21 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 21
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
+_INPUTS = tu.get_inputs(21, {"small", "p"})
 
 
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
 def test_parse_input():
@@ -34,28 +29,13 @@ def test_parse_input():
         "drzm": sol.Operation(operation="-", register_a="hmdt", register_b="zczc"),
         "hmdt": 32,
     }
-    assert sol.parse_input(_data_small()) == expected
+    assert sol.parse_input(_DATA_SMALL) == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 152, id="small"),
-        pytest.param(_data_p(), 331319379445180, id="p"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (152, 301),
+        "p": (331319379445180, 3715799488132),
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 301, id="small"),
-        pytest.param(_data_p(), 3715799488132, id="p"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

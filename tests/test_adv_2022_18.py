@@ -1,34 +1,13 @@
 """tests of adv_2022_18"""
 
-import pytest
-import general_utils as gu
 import solutions.adv_2022_18 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 18
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
+_INPUTS = tu.get_inputs(18, {"small", "my_1", "my_2", "my_3", "p", "s"})
 
 
-def _data_my_1():
-    return gu.read_input(_DAY_NUM, "my_1")
-
-
-def _data_my_2():
-    return gu.read_input(_DAY_NUM, "my_2")
-
-
-def _data_my_3():
-    return gu.read_input(_DAY_NUM, "my_3")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-def _data_s():
-    return gu.read_input(_DAY_NUM, "s")
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
 def test_parse_input():
@@ -48,36 +27,17 @@ def test_parse_input():
         (2, 1, 5),
         (2, 3, 5),
     )
-    assert sol.parse_input(_data_small()) == expected
+    assert sol.parse_input(_DATA_SMALL) == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 64, id="small"),
-        pytest.param(_data_my_1(), 6 * 3 * 3 + 6, id="my_1"),
-        pytest.param(_data_my_2(), 2 * 9 + 4 * 3 * 4 + 10, id="my_2"),
-        pytest.param(_data_my_3(), 2 * 9 + 4 * 3 * 5 + 2 * 6, id="my_3"),
-        pytest.param(_data_p(), 4348, id="p"),
-        pytest.param(_data_s(), 3364, id="s"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "my_1": (6 * 3 * 3 + 6, 6 * 3 * 3),
+        "my_2": (2 * 9 + 4 * 3 * 4 + 10, 2 * 9 + 4 * 3 * 4),
+        "my_3": (2 * 9 + 4 * 3 * 5 + 2 * 6, 2 * 9 + 4 * 3 * 5),
+        "small": (64, 58),
+        "p": (4348, 2546),
+        "s": (3364, 2006),
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_my_1(), 6 * 3 * 3, id="my_1"),
-        pytest.param(_data_my_2(), 2 * 9 + 4 * 3 * 4, id="my_2"),
-        pytest.param(_data_my_3(), 2 * 9 + 4 * 3 * 5, id="my_3"),
-        pytest.param(_data_small(), 58, id="small"),
-        pytest.param(_data_p(), 2546, id="p"),
-        pytest.param(_data_s(), 2006, id="s"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

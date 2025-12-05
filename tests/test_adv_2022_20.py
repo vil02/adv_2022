@@ -1,23 +1,19 @@
 """tests of adv_2022_00"""
 
 import pytest
-import general_utils as gu
 import solutions.adv_2022_20 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 20
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
+_INPUTS = tu.get_inputs(20, {"small", "p"})
 
 
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
 def test_parse_input():
     """tests parse_input"""
-    assert sol.parse_input(_data_small()) == (1, 2, -3, 3, -2, 0, 4)
+    assert sol.parse_input(_DATA_SMALL) == (1, 2, -3, 3, -2, 0, 4)
 
 
 @pytest.mark.parametrize(
@@ -105,25 +101,10 @@ def test_make_mix(input_tuple, input_num, expected):
     assert tuple(tmp_list) == sol.mark_duplicates(expected)
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 3, id="small"),
-        pytest.param(_data_p(), 872, id="p"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (3, 1623178306),
+        "p": (872, 5382459262696),
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 1623178306, id="small"),
-        pytest.param(_data_p(), 5382459262696, id="p"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

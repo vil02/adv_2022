@@ -2,18 +2,14 @@
 
 import math
 import pytest
-import general_utils as gu
 import solutions.adv_2022_19 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 19
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
+_INPUTS = tu.get_inputs(19, {"small", "p"})
 
 
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
 def test_parse_input():
@@ -38,7 +34,7 @@ def test_parse_input():
             },
         ),
     )
-    assert sol.parse_input(_data_small()) == expected
+    assert sol.parse_input(_DATA_SMALL) == expected
 
 
 _RAW_BLUEPRINT_SMALL_1 = ((4, 0, 0, 0), (2, 0, 0, 0), (3, 14, 0, 0), (2, 0, 7, 0))
@@ -48,8 +44,8 @@ _RAW_BLUEPRINT_SMALL_2 = ((2, 0, 0, 0), (3, 0, 0, 0), (3, 8, 0, 0), (3, 0, 12, 0
 @pytest.mark.parametrize(
     "input_blueprint,expected",
     [
-        (sol.parse_input(_data_small())[0], _RAW_BLUEPRINT_SMALL_1),
-        (sol.parse_input(_data_small())[1], _RAW_BLUEPRINT_SMALL_2),
+        (sol.parse_input(_DATA_SMALL)[0], _RAW_BLUEPRINT_SMALL_1),
+        (sol.parse_input(_DATA_SMALL)[1], _RAW_BLUEPRINT_SMALL_2),
     ],
 )
 def test_blueprint_to_raw_format(input_blueprint, expected):
@@ -141,9 +137,9 @@ def _parse_to_raw(in_data, in_num):
     return sol.blueprint_to_raw_format(sol.parse_input(in_data)[in_num])
 
 
-_RAW_BLUEPRINT_P_1 = _parse_to_raw(_data_p(), 0)
-_RAW_BLUEPRINT_P_2 = _parse_to_raw(_data_p(), 1)
-_RAW_BLUEPRINT_P_3 = _parse_to_raw(_data_p(), 2)
+_RAW_BLUEPRINT_P_1 = _parse_to_raw(_INPUTS.inputs["p"], 0)
+_RAW_BLUEPRINT_P_2 = _parse_to_raw(_INPUTS.inputs["p"], 1)
+_RAW_BLUEPRINT_P_3 = _parse_to_raw(_INPUTS.inputs["p"], 2)
 
 
 @pytest.mark.parametrize(
@@ -170,24 +166,5 @@ def test_evaluate_blueprint(input_raw_blueprint, input_time_limit, expected):
     assert sol.evaluate_blueprint(input_raw_blueprint, input_time_limit) == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 33, id="small"),
-        pytest.param(_data_p(), 1675, id="p"),
-    ],
-)
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_p(), 6840, id="p"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected
+test_solve_a = _INPUTS.get_test(sol.solve_a, {"small": 33, "p": 1675})
+test_solve_b = _INPUTS.get_test(sol.solve_b, {"p": 6840})
