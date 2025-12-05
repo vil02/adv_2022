@@ -1,35 +1,18 @@
 """tests of adv_2022_10"""
 
 import pytest
-import general_utils as gu
 import solutions.adv_2022_10 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 10
+_INPUTS = tu.get_inputs(10, {"small", "bigger", "p", "s", "b"})
 
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
-
-
-def _data_bigger():
-    return gu.read_input(_DAY_NUM, "bigger")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-def _data_s():
-    return gu.read_input(_DAY_NUM, "s")
-
-
-def _data_b():
-    return gu.read_input(_DAY_NUM, "b")
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
 def test_run():
     """tests run method of the Computer with small example data"""
-    cmds = sol.parse_input(_data_small())
+    cmds = sol.parse_input(_DATA_SMALL)
     computer = sol.Computer()
     computer.run(cmds)
     assert computer.saved_cycles == [1, 1, 1, 1, 4, 4, -1]
@@ -49,20 +32,6 @@ def test_run():
 def test_signal_strength(input_cycle, input_x, expected):
     """tests signal_strength"""
     assert sol.signal_strength(input_cycle, input_x) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_bigger(), 13140, id="bigger"),
-        pytest.param(_data_p(), 17020, id="p"),
-        pytest.param(_data_s(), 10760, id="s"),
-        pytest.param(_data_b(), 12980, id="b"),
-    ],
-)
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
 
 
 _EXPECTED_BIGGER = [
@@ -101,16 +70,12 @@ _EXPECTED_B = [
     "###..#..#..##..####.#.....##..####.#....",
 ]
 
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_bigger(), _EXPECTED_BIGGER, id="bigger"),
-        pytest.param(_data_p(), _EXPECTED_P, id="p"),
-        pytest.param(_data_s(), _EXPECTED_S, id="s"),
-        pytest.param(_data_b(), _EXPECTED_B, id="b"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "bigger": (13140, _EXPECTED_BIGGER),
+        "p": (17020, _EXPECTED_P),
+        "s": (10760, _EXPECTED_S),
+        "b": (12980, _EXPECTED_B),
+    },
 )
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

@@ -1,23 +1,17 @@
 """tests of adv_2022_16"""
 
 import pytest
-import general_utils as gu
 import solutions.adv_2022_16 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 16
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
+_INPUTS = tu.get_inputs(16, {"small", "p"})
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
 def test_parse_input():
     """tests parse_input with example data"""
-    actual = sol.parse_input(_data_small())
+    actual = sol.parse_input(_DATA_SMALL)
     expected = {
         "AA": sol.Valve(flow_rate=0, targets={"DD", "BB", "II"}),
         "BB": sol.Valve(flow_rate=13, targets={"CC", "AA"}),
@@ -38,7 +32,7 @@ def test_parse_input():
     "input_valves, start_valve, expected",
     [
         (
-            sol.parse_input(_data_small()),
+            sol.parse_input(_DATA_SMALL),
             "AA",
             {
                 "AA": 0,
@@ -89,27 +83,7 @@ def test_is_nth_bit_set(input_mask, input_bit_num, expected):
 @pytest.mark.parametrize(
     "in_valves, expected",
     [
-        (sol.parse_input(_data_small()), {"BB", "CC", "DD", "EE", "HH", "JJ"}),
-        (
-            sol.parse_input(_data_p()),
-            {
-                "AE",
-                "GJ",
-                "KF",
-                "XM",
-                "IJ",
-                "QB",
-                "SE",
-                "UK",
-                "CS",
-                "NA",
-                "CO",
-                "DS",
-                "MN",
-                "EU",
-                "QN",
-            },
-        ),
+        (sol.parse_input(_DATA_SMALL), {"BB", "CC", "DD", "EE", "HH", "JJ"}),
     ],
 )
 def test_get_openable_valves(in_valves, expected):
@@ -117,25 +91,10 @@ def test_get_openable_valves(in_valves, expected):
     assert sol.get_openable_valves(in_valves) == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 1651, id="small"),
-        pytest.param(_data_p(), 1862, id="p"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (1651, 1707),
+        "p": (1862, 2422),
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 1707, id="small"),
-        pytest.param(_data_p(), 2422, id="p"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

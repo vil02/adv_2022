@@ -1,26 +1,13 @@
 """tests of adv_2022_13"""
 
 import pytest
-import general_utils as gu
+
 import solutions.adv_2022_13 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 13
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-def _data_s():
-    return gu.read_input(_DAY_NUM, "s")
-
-
-def _data_b():
-    return gu.read_input(_DAY_NUM, "b")
+_INPUTS = tu.get_inputs(13, {"small", "p", "s", "b"})
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
 @pytest.mark.parametrize(
@@ -68,7 +55,7 @@ def test_parse_list(input_list):
 
 def test_parse_input():
     """tests parse input with example data"""
-    actual = sol.parse_input(_data_small())
+    actual = sol.parse_input(_DATA_SMALL)
     expected = (
         ([1, 1, 3, 1, 1], [1, 1, 5, 1, 1]),
         ([[1], [2, 3, 4]], [[1], 4]),
@@ -130,29 +117,12 @@ def test_is_in_order_negative(in_left, in_right):
     assert sol.is_in_order(in_left, in_right) == -1
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 13, id="small"),
-        pytest.param(_data_p(), 5717, id="p"),
-        pytest.param(_data_s(), 5905, id="s"),
-        pytest.param(_data_b(), 5557, id="b"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (13, 140),
+        "p": (5717, 25935),
+        "s": (5905, 21691),
+        "b": (5557, 22425),
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 140, id="small"),
-        pytest.param(_data_p(), 25935, id="p"),
-        pytest.param(_data_s(), 21691, id="s"),
-        pytest.param(_data_b(), 22425, id="b"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

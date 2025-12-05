@@ -2,37 +2,14 @@
 
 import collections
 import pytest
-import general_utils as gu
 import solutions.adv_2022_07 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 7
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
+_INPUTS = tu.get_inputs(7, {"small", "small_r", "p", "s", "b", "t"})
 
 
-def _data_small_r():
-    return gu.read_input(_DAY_NUM, "small_r")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-def _data_s():
-    return gu.read_input(_DAY_NUM, "s")
-
-
-def _data_b():
-    return gu.read_input(_DAY_NUM, "b")
-
-
-def _data_t():
-    return gu.read_input(_DAY_NUM, "t")
-
-
-_EXAMPLE_DATA = sol.parse_input(_data_small())
+_EXAMPLE_DATA = sol.parse_input(_INPUTS.inputs["small"])
+assert _EXAMPLE_DATA is not None
 
 Sizes = collections.namedtuple("Sizes", ["simple_size", "total_size"])
 _EXPECTED_SIZES = {
@@ -63,33 +40,14 @@ def test_get_dir_size(dir_path, expected):
     assert sol.get_dir_size(dir_path, _EXAMPLE_DATA) == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 95437, id="small"),
-        pytest.param(_data_small_r(), 99999, id="small_r"),
-        pytest.param(_data_p(), 1453349, id="p"),
-        pytest.param(_data_s(), 1501149, id="s"),
-        pytest.param(_data_b(), 1908462, id="b"),
-        pytest.param(_data_t(), 1350966, id="t"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (95437, 24933642),
+        "small_r": (99999, 50099999),
+        "p": (1453349, 2948823),
+        "s": (1501149, 10096985),
+        "b": (1908462, 3979145),
+        "t": (1350966, 6296435),
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 24933642, id="small"),
-        pytest.param(_data_small_r(), 50099999, id="small_r"),
-        pytest.param(_data_p(), 2948823, id="p"),
-        pytest.param(_data_s(), 10096985, id="s"),
-        pytest.param(_data_b(), 3979145, id="b"),
-        pytest.param(_data_t(), 6296435, id="t"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

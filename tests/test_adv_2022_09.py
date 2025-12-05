@@ -1,35 +1,21 @@
 """tests of adv_2022_09"""
 
 import pytest
-import general_utils as gu
 import solutions.adv_2022_09 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 9
+_INPUTS = tu.get_inputs(9, {"small", "bigger", "p", "s", "b"})
 
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
-
-
-def _data_bigger():
-    return gu.read_input(_DAY_NUM, "bigger")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-def _data_s():
-    return gu.read_input(_DAY_NUM, "s")
-
-
-def _data_b():
-    return gu.read_input(_DAY_NUM, "b")
+_DATA_BIGGER = _INPUTS.inputs["bigger"]
+assert _DATA_BIGGER is not None
 
 
 def test_parse_input():
     """tests parse input with example data"""
-    actual = sol.parse_input(_data_small())
+    actual = sol.parse_input(_DATA_SMALL)
     expected = [
         sol.Move("R", 4),
         sol.Move("U", 4),
@@ -63,7 +49,7 @@ def test_move_tail(input_head, input_tail, expected):
     "input_str,rope_length,expected",
     [
         pytest.param(
-            _data_small(),
+            _DATA_SMALL,
             2,
             {
                 (0, 0),
@@ -83,7 +69,7 @@ def test_move_tail(input_head, input_tail, expected):
             id="small",
         ),
         pytest.param(
-            _data_bigger(),
+            _DATA_BIGGER,
             10,
             {
                 (0, 0),
@@ -134,30 +120,23 @@ def test_rope_simulator(input_str, rope_length, expected):
     assert rope_simulator.visited_by_tail == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 13, id="small"),
-        pytest.param(_data_p(), 6090, id="p"),
-        pytest.param(_data_s(), 6011, id="s"),
-        pytest.param(_data_b(), 6243, id="b"),
-    ],
+test_solve_a = _INPUTS.get_test(
+    sol.solve_a,
+    {
+        "small": 13,
+        "p": 6090,
+        "s": 6011,
+        "b": 6243,
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
 
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 1, id="small"),
-        pytest.param(_data_bigger(), 36, id="bigger"),
-        pytest.param(_data_p(), 2566, id="p"),
-        pytest.param(_data_s(), 2419, id="s"),
-        pytest.param(_data_b(), 2630, id="b"),
-    ],
+test_solve_b = _INPUTS.get_test(
+    sol.solve_b,
+    {
+        "small": 1,
+        "bigger": 36,
+        "p": 2566,
+        "s": 2419,
+        "b": 2630,
+    },
 )
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

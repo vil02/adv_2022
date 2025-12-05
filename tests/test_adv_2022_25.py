@@ -2,18 +2,11 @@
 
 import collections
 import pytest
-import general_utils as gu
 import solutions.adv_2022_25 as sol
-
-_DAY_NUM = 25
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
+from . import test_utils as tu
 
 
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
+_INPUTS = tu.get_inputs(25, {"small", "p"})
 
 
 SNAFUDecimal = collections.namedtuple("SNAFUDecimal", ["snafu", "decimal"])
@@ -63,13 +56,6 @@ def test_decimal_to_snafu(input_data):
     assert sol.decimal_to_snafu(input_data.decimal) == input_data.snafu
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), "2=-1=0", id="small"),
-        pytest.param(_data_p(), "2--2-0=--0--100-=210", id="p"),
-    ],
+test_solve_a = _INPUTS.get_test(
+    sol.solve_a, {"small": "2=-1=0", "p": "2--2-0=--0--100-=210"}
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected

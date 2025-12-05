@@ -2,31 +2,17 @@
 
 import pytest
 import sympy
-import general_utils as gu
 import solutions.adv_2022_15 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 15
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-def _data_s():
-    return gu.read_input(_DAY_NUM, "s")
-
-
-def _data_b():
-    return gu.read_input(_DAY_NUM, "b")
+_INPUTS = tu.get_inputs(15, {"small", "p", "s", "b"})
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
 def test_parse_input():
     """tests parse_input with example data"""
-    actual = sol.parse_input(_data_small())
+    actual = sol.parse_input(_DATA_SMALL)
     expected = [
         sol.SensorReading((2, 18), (-2, 15)),
         sol.SensorReading((9, 16), (10, 16)),
@@ -77,26 +63,13 @@ def test_get_covered_interval(input_row, expected):
 
 def test_count_safe_in_row():
     """tests count_safe_in_row with example data"""
-    assert sol.count_safe_in_row(sol.parse_input(_data_small()), 10) == 26
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_p(), 4827924, id="p"),
-        pytest.param(_data_s(), 4861076, id="s"),
-        pytest.param(_data_b(), 5878678, id="b"),
-    ],
-)
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
+    assert sol.count_safe_in_row(sol.parse_input(_DATA_SMALL), 10) == 26
 
 
 def test_find_distress_beacon_fine():
     """tests find_distress_beacon with example data"""
     assert sol.find_distress_beacon_fine(
-        sol.parse_input(_data_small()), 0, 20, 0, 20
+        sol.parse_input(_DATA_SMALL), 0, 20, 0, 20
     ) == (
         14,
         11,
@@ -106,14 +79,14 @@ def test_find_distress_beacon_fine():
 def test_find_distress_beacon_fine_when_no_solution():
     """find_distress_beacon returns None when there is no solution"""
     assert (
-        sol.find_distress_beacon_fine(sol.parse_input(_data_small()), 0, 20, 0, 10)
+        sol.find_distress_beacon_fine(sol.parse_input(_DATA_SMALL), 0, 20, 0, 10)
         is None
     )
 
 
 def test_find_distress_beacon():
     """tests find_distress_beacon with example data"""
-    assert sol.find_distress_beacon(sol.parse_input(_data_small()), 0, 20, 0, 20) == (
+    assert sol.find_distress_beacon(sol.parse_input(_DATA_SMALL), 0, 20, 0, 20) == (
         14,
         11,
     )
@@ -132,14 +105,11 @@ def test_tuning_frequency(input_x, input_y, expected):
     assert sol.tuning_frequency(input_x, input_y) == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_p(), 12977110973564, id="p"),
-        pytest.param(_data_s(), 10649103160102, id="s"),
-        pytest.param(_data_b(), 11796491041245, id="b"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "p": (4827924, 12977110973564),
+        "s": (4861076, 10649103160102),
+        "b": (5878678, 11796491041245),
+    },
 )
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

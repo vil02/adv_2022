@@ -1,26 +1,12 @@
 """tests of adv_2022_11"""
 
 import pytest
-import general_utils as gu
 import solutions.adv_2022_11 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 11
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-def _data_s():
-    return gu.read_input(_DAY_NUM, "s")
-
-
-def _data_b():
-    return gu.read_input(_DAY_NUM, "b")
+_INPUTS = tu.get_inputs(11, {"small", "p", "s", "b"})
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
 def _get_dummy_manipulator_b(in_operation):
@@ -36,7 +22,7 @@ def _get_dummy_manipulator_b(in_operation):
 )
 def test_parse_input(get_manipulator):
     """tests parse_input with the example data"""
-    actual_monkeys, acutal_mod_val = sol.parse_input(_data_small(), get_manipulator)
+    actual_monkeys, acutal_mod_val = sol.parse_input(_DATA_SMALL, get_manipulator)
     expected_monkeys = [
         sol.Monkey(
             [79, 98],
@@ -64,7 +50,7 @@ def test_parse_input(get_manipulator):
 
 def test_make_round():
     """tests make_round with example data"""
-    monkeys, _ = sol.parse_input(_data_small(), sol.ItemManipulatorA)
+    monkeys, _ = sol.parse_input(_DATA_SMALL, sol.ItemManipulatorA)
     sol.make_round(monkeys)
     assert len(monkeys) == 4
     assert monkeys[0].items == [20, 23, 27, 26]
@@ -75,7 +61,7 @@ def test_make_round():
 
 def test_make_rounds():
     """tests make_rounds with example data"""
-    monkeys, _ = sol.parse_input(_data_small(), sol.ItemManipulatorA)
+    monkeys, _ = sol.parse_input(_DATA_SMALL, sol.ItemManipulatorA)
     sol.make_rounds(monkeys, 20)
     assert len(monkeys) == 4
     assert monkeys[0].inspected_items == 101
@@ -84,29 +70,12 @@ def test_make_rounds():
     assert monkeys[3].inspected_items == 105
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 10605, id="small"),
-        pytest.param(_data_p(), 78960, id="p"),
-        pytest.param(_data_s(), 67830, id="s"),
-        pytest.param(_data_b(), 110264, id="b"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (10605, 2713310158),
+        "p": (78960, 14561971968),
+        "s": (67830, 15305381442),
+        "b": (110264, 23612457316),
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 2713310158, id="small"),
-        pytest.param(_data_p(), 14561971968, id="p"),
-        pytest.param(_data_s(), 15305381442, id="s"),
-        pytest.param(_data_b(), 23612457316, id="b"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

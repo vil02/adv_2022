@@ -1,30 +1,8 @@
 """tests of adv_2022_05"""
 
 import pytest
-import general_utils as gu
 import solutions.adv_2022_05 as sol
-
-_DAY_NUM = 5
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
-
-
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
-
-
-def _data_s():
-    return gu.read_input(_DAY_NUM, "s")
-
-
-def _data_b():
-    return gu.read_input(_DAY_NUM, "b")
-
-
-def _data_t():
-    return gu.read_input(_DAY_NUM, "t")
+from . import test_utils as tu
 
 
 @pytest.mark.parametrize(
@@ -40,9 +18,14 @@ def test_get_stack_number(input_col, expected):
     assert sol.get_stack_number(input_col) == expected
 
 
+_INPUTS = tu.get_inputs(5, {"small", "p", "s", "b", "t"})
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
+
+
 def test_parse_input():
     """tests parse_input"""
-    actual_state, actual_moves = sol.parse_input(_data_small())
+    actual_state, actual_moves = sol.parse_input(_DATA_SMALL)
     expected_state = {1: ["Z", "N"], 2: ["M", "C", "D"], 3: ["P"]}
     expected_moves = [
         sol.Move(1, 2, 1),
@@ -58,13 +41,13 @@ def test_parse_input():
     "input_str,move_fun,expected_state",
     [
         pytest.param(
-            _data_small(),
+            _DATA_SMALL,
             sol.make_move_a,
             {1: ["C"], 2: ["M"], 3: ["P", "D", "N", "Z"]},
             id="small_with_make_move_a",
         ),
         pytest.param(
-            _data_small(),
+            _DATA_SMALL,
             sol.make_move_b,
             {1: ["M"], 2: ["C"], 3: ["P", "Z", "N", "D"]},
             id="small_with_make_move_b",
@@ -78,31 +61,13 @@ def test_make_move(input_str, move_fun, expected_state):
     assert state == expected_state
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), "CMZ", id="small"),
-        pytest.param(_data_p(), "LJSVLTWQM", id="p"),
-        pytest.param(_data_s(), "TQRFCBSJJ", id="s"),
-        pytest.param(_data_b(), "SHMSDGZVC", id="b"),
-        pytest.param(_data_t(), "RNZLFZSJH", id="t"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": ("CMZ", "MCD"),
+        "p": ("LJSVLTWQM", "BRQWDBBJM"),
+        "s": ("TQRFCBSJJ", "RMHFJNVFP"),
+        "b": ("SHMSDGZVC", "VRZGHDFBQ"),
+        "t": ("RNZLFZSJH", "CNSFCGJSM"),
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), "MCD", id="small"),
-        pytest.param(_data_p(), "BRQWDBBJM", id="p"),
-        pytest.param(_data_s(), "RMHFJNVFP", id="s"),
-        pytest.param(_data_b(), "VRZGHDFBQ", id="b"),
-        pytest.param(_data_t(), "CNSFCGJSM", id="t"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected

@@ -1,21 +1,17 @@
-"""tests of adv_2022_00"""
+"""tests of adv_2022_24"""
 
 import pytest
-import general_utils as gu
 import solutions.adv_2022_24 as sol
+from . import test_utils as tu
 
-_DAY_NUM = 24
-
-
-def _data_small():
-    return gu.read_input(_DAY_NUM, "small")
+_INPUTS = tu.get_inputs(24, {"small", "p"})
 
 
-def _data_p():
-    return gu.read_input(_DAY_NUM, "p")
+_DATA_SMALL = _INPUTS.inputs["small"]
+assert _DATA_SMALL is not None
 
 
-_EXAMPLE_VALLEY = sol.prepare_valley(_data_small())
+_EXAMPLE_VALLEY = sol.prepare_valley(_DATA_SMALL)
 _IS_EMPTY_TEST_SIZE = 20
 
 
@@ -78,25 +74,10 @@ def test_position_candidates(input_size, input_pos, expected):
     assert set(sol.position_candidates(input_size, input_pos)) == expected
 
 
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 18, id="small"),
-        pytest.param(_data_p(), 221, id="p"),
-    ],
+test_solve_a, test_solve_b = _INPUTS.get_tests(
+    (sol.solve_a, sol.solve_b),
+    {
+        "small": (18, 54),
+        "p": (221, 739),
+    },
 )
-def test_solve_a(input_str, expected):
-    """tests solve_a"""
-    assert sol.solve_a(input_str) == expected
-
-
-@pytest.mark.parametrize(
-    "input_str,expected",
-    [
-        pytest.param(_data_small(), 54, id="small"),
-        pytest.param(_data_p(), 739, id="p"),
-    ],
-)
-def test_solve_b(input_str, expected):
-    """tests solve_b"""
-    assert sol.solve_b(input_str) == expected
