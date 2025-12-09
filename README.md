@@ -7,5 +7,3 @@
 [![codecov](https://codecov.io/gh/vil02/adv_2022/branch/master/graph/badge.svg?token=LC7SJ73ENG)](https://codecov.io/gh/vil02/adv_2022)
 
 Python solutions of [Advent of Code 2022](https://adventofcode.com/2022)
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/vil02/adv_2022)
