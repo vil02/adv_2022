@@ -4,7 +4,6 @@ import pytest
 import solutions.adv_2022_12 as sol
 from . import test_utils as tu
 
-
 _INPUTS = tu.get_inputs(12, {"small", "p", "s", "b"})
 _DATA_SMALL = _INPUTS.inputs["small"]
 assert _DATA_SMALL is not None
