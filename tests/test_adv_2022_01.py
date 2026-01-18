@@ -3,7 +3,6 @@
 import solutions.adv_2022_01 as sol
 from . import test_utils as tu
 
-
 _INPUTS = tu.get_inputs(1, {"small", "p", "f", "b", "t"})
 
 
