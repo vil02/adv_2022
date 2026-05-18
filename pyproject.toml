@@ -20,7 +20,7 @@ pytest-xdist = "3.8.0"
 pylint = "4.0.5"
 flake8 = "7.3.0"
 coverage = "7.14.0"
-black = "26.5.0"
+black = "26.5.1"
 
 [build-system]
 requires = ["poetry-core"]
